@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Droip | No-Code website builder for WordPress</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#f43f5e',
+                        dark: '#1e293b',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #f43f5e 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .btn-gradient {
+            background: linear-gradient(135deg, #6366f1 0%, #f43f5e 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Mobile navigation */
+        .mobile-nav {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .mobile-nav.open {
+            transform: translateX(0);
+        }
+        
+        .dark .feature-card {
+            background-color: #1e293b;
+            border-color: #334155;
+        }
+        
+        .dark body {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+    </style>
+</head>
+<body class="antialiased bg-white text-gray-800">
+    <!-- Header -->
+    <header class="fixed w-full bg-white/80 backdrop-blur-sm z-50 shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="flex items-center">
+                <span class="text-2xl font-bold gradient-text">Droip</span>
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-6">
+                <a href="#" class="text-gray-600 hover:text-primary font-medium transition">Home</a>
+                <div class="relative group">
+                    <a href="#" class="text-gray-600 hover:text-primary font-medium transition flex items-center">
+                        Product <i class="fas fa-chevron-down text-xs ml-1"></i>
+                    </a>
+                    <div class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Editor</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Grids & Layouts</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Typography</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">SEO</a>
+                    </div>
+                </div>
+                <a href="#" class="text-gray-600 hover:text-primary font-medium transition">Resources</a>
+                <a href="#" class="text-gray-600 hover:text-primary font-medium transition">Support</a>
+                <a href="#" class="text-gray-600 hover:text-primary font-medium transition">Pricing</a>
+            </nav>
+            
+            <!-- Auth Buttons -->
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="#" class="text-gray-600 hover:text-primary font-medium transition">Login</a>
+                <a href="#" class="btn-gradient text-white px-5 py-2 rounded-full font-medium">Get Started</a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Mobile Navigation -->
+    <div id="mobile-nav" class="mobile-nav fixed top-0 right-0 h-full w-3/4 bg-white z-50 shadow-2xl p-6 md:hidden">
+        <div class="flex justify-between items-center mb-8">
+            <span class="text-2xl font-bold gradient-text">Droip</span>
+            <button id="close-menu" class="text-gray-600 focus:outline-none">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <nav class="flex flex-col space-y-4">
+            <a href="#" class="text-gray-600 hover:text-primary font-medium transition py-2">Home</a>
+            <div class="relative">
+                <button class="w-full text-left text-gray-600 hover:text-primary font-medium transition py-2 flex items-center justify-between">
+                    Product <i class="fas fa-chevron-down text-xs"></i>
+                </button>
+                <div class="pl-4 mt-2 space-y-2 hidden">
+                    <a href="#" class="block py-2 text-sm text-gray-700">Editor</a>
+                    <a href="#" class="block py-2 text-sm text-gray-700">Grids & Layouts</a>
+                    <a href="#" class="block py-2 text-sm text-gray-700">Typography</a>
+                    <a href="#" class="block py-2 text-sm text-gray-700">SEO</a>
+                </div>
+            </div>
+            <a href="#" class="text-gray-600 hover:text-primary font-medium transition py-2">Resources</a>
+            <a href="#" class="text-gray-600 hover:text-primary font-medium transition py-2">Support</a>
+            <a href="#" class="text-gray-600 hover:text-primary font-medium transition py-2">Pricing</a>
+            <div class="pt-4 space-y-4">
+                <a href="#" class="block text-center text-gray-600 hover:text-primary font-medium transition py-2">Login</a>
+                <a href="#" class="block text-center btn-gradient text-white py-3 rounded-full font-medium">Get Started</a>
+            </div>
+        </nav>
+    </div>
+    
+    
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-4">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">No-Code WordPress Site Builder<br><span class="gradient-text">Break Limits. Build Anything.</span><br>No Code Needed.</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-10">Droip is a no-code, drag-and-drop WordPress builder that simplifies website creation with powerful capabilities.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
+                <a href="#" class="btn-gradient text-white px-8 py-3 rounded-full font-medium text-lg">Get started with Droip</a>
+                <a href="#" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-8 py-3 rounded-full font-medium text-lg transition flex items-center justify-center"><i class="fas fa-play-circle mr-2"></i> Watch Intro</a>
+            </div>
+            <div class="relative overflow-hidden" id="scroll-slider">
+            <div class="flex w-[500%]"> 
+                        <div class="bg-white rounded-lg shadow-xl overflow-hidden"><img src="https://images.unsplash.com/photo-1506765515384-028b60a970df?fit=crop&w=1200&q=80" alt="Slide 1" class="w-full"></div>
+                        <div class="bg-white rounded-lg shadow-xl overflow-hidden"><img src="https://images.unsplash.com/photo-1517433456452-f9633a875f6f?fit=crop&w=1200&q=80" alt="Slide 2" class="w-full"></div>
+                        <div class="bg-white rounded-lg shadow-xl overflow-hidden"><img src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?fit=crop&w=1200&q=80" alt="Slide 3" class="w-full"></div>
+                        <div class="bg-white rounded-lg shadow-xl overflow-hidden"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?fit=crop&w=1200&q=80" alt="Slide 4" class="w-full"></div>
+                        <div class="bg-white rounded-lg shadow-xl overflow-hidden"><img src="https://images.unsplash.com/photo-1523475496153-3d6ccf3fa365?fit=crop&w=1200&q=80" alt="Slide 5" class="w-full"></div>
+                    </div>
+                </div>
+        </div>
+    </section>
+    <!-- Features Section -->
+    <section class="py-20 px-4 bg-gray-50">
+        <div class="container mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Design pixel-perfect sites beyond ordinary</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Create stunning websites with powerful tools that give you complete control.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="feature-card bg-white rounded-xl p-8 shadow-sm border border-gray-100 animate-on-scroll" data-delay="0">
+                    <div class="mb-4">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4"><i class="fas fa-text-height text-primary text-xl"></i></div>
+                        <h3 class="text-xl font-bold mb-2">Advanced typography</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Take full control over your text with precision typography tools. Adjust fonts, spacing, and styles to add more character to your design.</p>
+                    <a href="#" class="text-primary font-medium hover:underline flex items-center">View Details <i class="fas fa-arrow-right ml-2"></i></a>
+                </div>
+                <div class="feature-card bg-white rounded-xl p-8 shadow-sm border border-gray-100 animate-on-scroll" data-delay="150">
+                    <div class="mb-4">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4"><i class="fas fa-border-all text-primary text-xl"></i></div>
+                        <h3 class="text-xl font-bold mb-2">CSS grids and layouts</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Build complex layouts with ease using CSS Grids. Create multi-directional structures, manage spacing, and achieve perfect alignment without limitations.</p>
+                    <a href="#" class="text-primary font-medium hover:underline flex items-center">View Details <i class="fas fa-arrow-right ml-2"></i></a>
+                </div>
+                <div class="feature-card bg-white rounded-xl p-8 shadow-sm border border-gray-100 animate-on-scroll" data-delay="300">
+                    <div class="mb-4">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4"><i class="fas fa-mobile-alt text-primary text-xl"></i></div>
+                        <h3 class="text-xl font-bold mb-2">Adaptive design</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Ensure flawless responsiveness across all devices. Design with adaptive elements that adjust seamlessly to different screen sizes and resolutions.</p>
+                </div>
+                <div class="feature-card bg-white rounded-xl p-8 shadow-sm border border-gray-100 animate-on-scroll" data-delay="450">
+                    <div class="mb-4">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4"><i class="fas fa-clock text-primary text-xl"></i></div>
+                        <h3 class="text-xl font-bold mb-2">Designed for efficiency</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Streamline your workflow with intuitive tools that simplify layout structuring. Save time while maintaining complete design accuracy and flexibility.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Interactions Section -->
+    <section class="py-20 px-4">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-12 md:mb-0 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Craft engaging and immersive interactions</h2>
+                    
+                    <div class="space-y-8">
+                        <div class="flex">
+                            <div class="mr-4">
+                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-film text-primary"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Advanced interaction timeline</h3>
+                                <p class="text-gray-600">
+                                    Design smooth, multi-step animations with a timeline-based editor for complete control.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="mr-4">
+                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-stopwatch text-primary"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Custom timing editor</h3>
+                                <p class="text-gray-600">
+                                    Fine-tune every interaction to deliver flawless performance by adjusting delays, durations, easing functions, and more.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="mr-4">
+                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-magic text-primary"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Advanced triggers</h3>
+                                <p class="text-gray-600">
+                                    Trigger animations based on scrolling, hovering, page load, and more for a dynamic experience.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 animate-on-scroll" data-delay="200">
+                    <div class="bg-gray-100 rounded-xl p-4">
+                        <div class="bg-white rounded-lg shadow-xl overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1593720213428-28a5b9e94613?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" alt="Interaction Editor" class="w-full">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Content Manager Section -->
+    <section class="py-20 px-4 bg-gray-50">
+        <div class="container mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Scale your business with</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card bg-white rounded-xl p-8 shadow-sm border border-gray-100 animate-on-scroll">
+                    <div class="mb-4">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-database text-primary text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Content Manager</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Handle dynamic data with the built-in content manager. Link data dynamically to any part of your website.
+                    </p>
+                    <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                        View Details <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card bg-white rounded-xl p-8 shadow-sm border border-gray-100 animate-on-scroll" data-delay="200">
+                    <div class="mb-4">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-images text-primary text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Media Manager</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Organize and edit all media assets, including SVGs, Lottie, and icons, with the built-in image and shape editor.
+                    </p>
+                    <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                        View Details <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card bg-white rounded-xl p-8 shadow-sm border border-gray-100 animate-on-scroll" data-delay="300">
+                    <div class="mb-4">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-search text-primary text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">SEO</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Dynamically update SEO content across pages to optimize your website's search performance.
+                    </p>
+                    <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                        View Details <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pixel Perfect Section -->
+    <section class="py-20 px-4">
+        <div class="container mx-auto">
+            <div class="text-center max-w-3xl mx-auto animate-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">Create <span class="gradient-text">pixel-perfect accuracy in the atomic level</span></h2>
+                <p class="text-lg text-gray-600 mb-8">
+                    Create your website from the ground up with complete control over every element, down to the smallest detail.
+                </p>
+                <a href="#" class="btn-gradient text-white px-8 py-3 rounded-full font-medium text-lg inline-block">
+                    Get Started With Tutorials
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Themes Section -->
+    <section class="py-20 px-4 bg-gray-900 text-white">
+        <div class="container mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Jumpstart your business with beautifully crafted themes and sections</h2>
+                <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                    Launch with ease using stunning, ready-to-use themes & sections designed for every need.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 animate-on-scroll">
+                <div class="bg-gray-800 rounded-xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1541462608143-67571c6738dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Theme Example 1" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Business Site</h3>
+                        <p class="text-gray-400 mb-4">Professional theme for corporate websites</p>
+                        <a href="#" class="text-primary hover:underline">View Theme</a>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Theme Example 2" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Portfolio</h3>
+                        <p class="text-gray-400 mb-4">Showcase your creative work with style</p>
+                        <a href="#" class="text-primary hover:underline">View Theme</a>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1559598467-f8b76c8155d0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Theme Example 3" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">E-commerce</h3>
+                        <p class="text-gray-400 mb-4">Start selling online with a premium shop design</p>
+                        <a href="#" class="text-primary hover:underline">View Theme</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Benefits Section -->
+    <section class="py-20 px-4">
+        <div class="container mx-auto">
+            <div class="max-w-3xl mx-auto mb-16 text-center animate-on-scroll">
+                <h2 class="text-2xl bg-clip-text font-bold mb-4 inline-block py-1 px-4 rounded-lg bg-gray-100">Low third-party dependencies</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center animate-on-scroll">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-sliders-h text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">More control, less reliance</h3>
+                    <p class="text-gray-600">
+                        Get complete control over your website's performance and aesthetics without extra plugins.
+                    </p>
+                </div>
+                
+                <div class="text-center animate-on-scroll" data-delay="150">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-dollar-sign text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Cost-effective</h3>
+                    <p class="text-gray-600">
+                        Reduce ongoing costs with built-in tools that let you scale seamlessly without extra expenses.
+                    </p>
+                </div>
+                
+                <div class="text-center animate-on-scroll" data-delay="300">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-tasks text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Simplified workflow</h3>
+                    <p class="text-gray-600">
+                        With everything built in, your design process is streamlined, efficient, and hassle-free.
+                    </p>
+                </div>
+                
+                <div class="text-center animate-on-scroll" data-delay="450">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-shield-alt text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Streamlined & secure</h3>
+                    <p class="text-gray-600">
+                        Fewer external plugins mean fewer vulnerabilities, keeping your site secure and lightweight.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Performance Section -->
+    <section class="py-20 px-4 bg-gray-50">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-12 md:mb-0 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Performance that sets you apart</h2>
+                    
+                    <div class="space-y-8">
+                        <div class="flex">
+                            <div class="mr-4">
+                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-code text-primary"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Clean code output</h3>
+                                <p class="text-gray-600">
+                                    Droip generates minimal, well-structured code that is free from unnecessary bloat ensuring efficiency.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="mr-4">
+                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-tachometer-alt text-primary"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Keep website lightweight</h3>
+                                <p class="text-gray-600">
+                                    Optimized code means faster load times, improved performance, and a smoother user experience.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="mr-4">
+                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-plug text-primary"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">App integration</h3>
+                                <p class="text-gray-600">
+                                    Connect your go-to apps effortlessly within the builder for a smooth and uninterrupted workflow.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 animate-on-scroll" data-delay="200">
+                    <div class="bg-gradient-to-br from-indigo-500 to-pink-500 rounded-xl p-1">
+                        <div class="bg-white rounded-lg overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" alt="Performance Dashboard" class="w-full">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Grid Section -->
+    <section class="py-20 px-4">
+        <div class="container mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Design and build everything <span class="gradient-text">more efficiently</span> with the <span class="gradient-text">most advanced granular controls</span></h2>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-on-scroll">
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-exchange-alt text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Seamless migration</h3>
+                    <p class="text-gray-600">
+                        Migrate your existing design seamlessly into Droip with just a click of a button!
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-wpforms text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Form builder</h3>
+                    <p class="text-gray-600">
+                        Build forms for any purpose and effortlessly manage form data natively.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-code text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">CSS preview</h3>
+                    <p class="text-gray-600">
+                        See real-time CSS changes and fine-tune styles as you need.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-mobile-alt text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Unlimited breakpoints</h3>
+                    <p class="text-gray-600">
+                        Achieve pixel-perfect responsiveness across all devices with unlimited breakpoints.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fab fa-figma text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Figma to droip</h3>
+                    <p class="text-gray-600">
+                        Seamlessly import Figma designs into Droip and bring your vision to life in no time.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-code text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Code element</h3>
+                    <p class="text-gray-600">
+                        Add custom HTML, CSS, and JavaScript to an element for extended functionality.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- AI Section -->
+    <section class="py-20 px-4 bg-gradient-to-br from-indigo-600 to-pink-600 text-white">
+        <div class="container mx-auto text-center">
+            <div class="max-w-3xl mx-auto animate-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">Droip AI</h2>
+                <p class="text-xl mb-8">
+                    Harness AI to accelerate your workflow and creative process.
+                </p>
+                <a href="#" class="bg-white text-primary hover:bg-gray-100 px-8 py-3 rounded-full font-medium text-lg inline-block transition shadow-lg hover:shadow-xl">
+                    Get Started For Free
+                </a>
+                <p class="mt-6 text-indigo-200">
+                    Experience the power of Droip no-code website builder, risk free. Create stunning, responsive sites with pure creative freedom.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8 px-4">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Social</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Product</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Grid & layouts</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Typography</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Media manager</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Form builder</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Pop-up builder</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Release Notes</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Support</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Company</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">About</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Pricing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 mb-4 md:mb-0">© 2025 Droip. All rights reserved</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-white transition">Terms & Privacy</a>
+                    <a href="#" class="text-gray-500 hover:text-white transition">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Cookie Consent -->
+    <div id="cookie-consent" class="fixed bottom-0 left-0 w-full bg-white shadow-lg p-4 z-50 flex justify-between items-center">
+        <p class="text-sm text-gray-600 pr-4">
+            Our website uses cookies to improve your browsing experience on our website. By continuing to use this website, you
+            agree to their use. For details, please check our <a href="#" class="text-primary hover:underline">Privacy Policy</a>.
+        </p>
+        <button id="accept-cookies" class="bg-primary text-white px-4 py-2 rounded whitespace-nowrap">Okay</button>
+    </div>
+    
+    <!-- JavaScript -->
+    <script>
+        // Handle dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+        
+        // Mobile menu functionality
+        const menuButton = document.getElementById('menu-button');
+        const closeMenu = document.getElementById('close-menu');
+        const mobileNav = document.getElementById('mobile-nav');
+        
+        menuButton.addEventListener('click', () => {
+            mobileNav.classList.add('open');
+        });
+        
+        closeMenu.addEventListener('click', () => {
+            mobileNav.classList.remove('open');
+        });
+        
+        // Cookie consent
+        const cookieConsent = document.getElementById('cookie-consent');
+        const acceptCookies = document.getElementById('accept-cookies');
+        
+        acceptCookies.addEventListener('click', () => {
+            cookieConsent.style.display = 'none';
+            // In a real implementation, you would set a cookie here
+        });
+        
+        // Scroll animations
+        function handleScrollAnimations() {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                const delay = element.getAttribute('data-delay') || 0;
+                
+                if (elementTop < windowHeight * 0.85) {
+                    setTimeout(() => {
+                        element.classList.add('animated');
+                    }, delay);
+                }
+            });
+        }
+        
+        // Run once on load
+        handleScrollAnimations();
+        
+        // Add scroll event listener
+        window.addEventListener('scroll', handleScrollAnimations);
+	document.addEventListener('DOMContentLoaded', () => {
+  tns({
+    container: '.tns-carousel',
+    items: 1,
+    slideBy: 'page',
+    autoplay: true,
+    autoplayButtonOutput: false,
+    controls: false,
+    nav: false,
+    gutter: 16,
+    swipeAngle: false,
+    mouseDrag: true,
+  });
+});
+
+gsap.registerPlugin(ScrollTrigger);
+
+  // target the row of slides
+  gsap.to("#scroll-slider > div", {
+    xPercent: -80,               // move left by 4 slides (5 slides → 80%)
+    ease: "none",
+    scrollTrigger: {
+      trigger: "#scroll-slider",
+      start: "top top",          // when slider top hits viewport top
+      end: "bottom+=200% top",   // lengthen scroll to suit (200% extra)
+      scrub: true,               // tie animation to scroll
+      pin: true,                 // pin slider in place
+      anticipatePin: 1,
+    }
+  });
+    </script>
+</body>
+</html>
