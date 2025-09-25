@@ -6,8 +6,7 @@
     <title>Droip | No-Code website builder for WordPress</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
 
@@ -92,6 +91,86 @@
             background-color: #0f172a;
             color: #f8fafc;
         }
+        
+        /* Horizontal scroll slider styles */
+        #scroll-slider {
+            height: auto;
+        }
+        
+        #scroll-slider > div {
+            will-change: transform;
+        }
+        
+        /* Ensure slides maintain proper spacing on mobile */
+        @media (max-width: 768px) {
+            #scroll-slider {
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+            }
+            
+            #scroll-slider > div > div {
+                scroll-snap-align: center;
+                min-width: 280px;
+            }
+        }
+        
+        /* Paper airplane animation styles */
+        .paper-airplane {
+            position: fixed;
+            z-index: 40;
+            font-size: 36px;
+            color: #6366f1;
+            opacity: 0;
+            transform: rotate(0deg);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
+            filter: drop-shadow(0 2px 4px rgba(99, 102, 241, 0.3));
+        }
+        
+        .paper-airplane.visible {
+            opacity: 0.9;
+        }
+        
+        .paper-airplane.flying {
+            animation: paperFlyHorizontal 3s ease-in-out infinite;
+        }
+        
+        @keyframes paperFlyHorizontal {
+            0%, 100% {
+                transform: rotate(0deg) translateY(0px) scale(1);
+            }
+            25% {
+                transform: rotate(2deg) translateY(-2px) scale(1.05);
+            }
+            50% {
+                transform: rotate(-2deg) translateY(1px) scale(0.98);
+            }
+            75% {
+                transform: rotate(1deg) translateY(-1px) scale(1.02);
+            }
+        }
+        
+        /* Paper airplane trail/trace line */
+        .airplane-trail {
+            position: fixed;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, #6366f1 50%, transparent 100%);
+            opacity: 0;
+            z-index: 39;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+        }
+        
+        .airplane-trail.visible {
+            opacity: 0.4;
+        }
+        
+        /* Hide on mobile for better performance */
+        @media (max-width: 768px) {
+            .paper-airplane, .airplane-trail {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body class="antialiased bg-white text-gray-800">
@@ -168,7 +247,7 @@
     
     
     <!-- Hero Section -->
-    <section class="pt-32 pb-20 px-4">
+    <section class="pt-32 pb-10 px-4">
         <div class="container mx-auto text-center">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">No-Code WordPress Site Builder<br><span class="gradient-text">Break Limits. Build Anything.</span><br>No Code Needed.</h1>
             <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-10">Droip is a no-code, drag-and-drop WordPress builder that simplifies website creation with powerful capabilities.</p>
@@ -176,15 +255,35 @@
                 <a href="#" class="btn-gradient text-white px-8 py-3 rounded-full font-medium text-lg">Get started with Droip</a>
                 <a href="#" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-8 py-3 rounded-full font-medium text-lg transition flex items-center justify-center"><i class="fas fa-play-circle mr-2"></i> Watch Intro</a>
             </div>
-            <div class="relative overflow-hidden" id="scroll-slider">
-            <div class="flex w-[500%]"> 
-                        <div class="bg-white rounded-lg shadow-xl overflow-hidden"><img src="https://images.unsplash.com/photo-1506765515384-028b60a970df?fit=crop&w=1200&q=80" alt="Slide 1" class="w-full"></div>
-                        <div class="bg-white rounded-lg shadow-xl overflow-hidden"><img src="https://images.unsplash.com/photo-1517433456452-f9633a875f6f?fit=crop&w=1200&q=80" alt="Slide 2" class="w-full"></div>
-                        <div class="bg-white rounded-lg shadow-xl overflow-hidden"><img src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?fit=crop&w=1200&q=80" alt="Slide 3" class="w-full"></div>
-                        <div class="bg-white rounded-lg shadow-xl overflow-hidden"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?fit=crop&w=1200&q=80" alt="Slide 4" class="w-full"></div>
-                        <div class="bg-white rounded-lg shadow-xl overflow-hidden"><img src="https://images.unsplash.com/photo-1523475496153-3d6ccf3fa365?fit=crop&w=1200&q=80" alt="Slide 5" class="w-full"></div>
+            <div class="relative overflow-hidden max-w-[80%] mx-auto" id="scroll-slider">
+                <div class="flex h-96 md:h-[32rem] lg:h-[40rem]">
+                    <div class="w-full flex-shrink-0 px-2">
+                        <div class="bg-white rounded-lg shadow-xl overflow-hidden h-full">
+                            <img src="https://unsplash.com/photos/9AdeEdYB2yk/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTh8fHRlY2h8ZW58MHwyfHx8MTc1ODgyOTM0M3ww&force=true" alt="Slide 1" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="w-full flex-shrink-0 px-2">
+                        <div class="bg-white rounded-lg shadow-xl overflow-hidden h-full">
+                            <img src="https://unsplash.com/photos/mOwGqW_013c/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MjN8fHRlY2h8ZW58MHwyfHx8MTc1ODgwOTA4NXww&force=true" alt="Slide 2" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="w-full flex-shrink-0 px-2">
+                        <div class="bg-white rounded-lg shadow-xl overflow-hidden h-full">
+                            <img src="https://unsplash.com/photos/APHlCkuUXfU/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8NTR8fHRlY2h8ZW58MHwyfHx8MTc1ODgyOTY3MXww&force=true" alt="Slide 3" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="w-full flex-shrink-0 px-2">
+                        <div class="bg-white rounded-lg shadow-xl overflow-hidden h-full">
+                            <img src="https://unsplash.com/photos/FFMcFwIUM5Y/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8NjB8fHRlY2h8ZW58MHwyfHx8MTc1ODgyOTY3MXww&force=true" alt="Slide 4" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="w-full flex-shrink-0 px-2">
+                        <div class="bg-white rounded-lg shadow-xl overflow-hidden h-full">
+                            <img src="https://unsplash.com/photos/qeICalRUfMU/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8ODB8fHRlY2h8ZW58MHwyfHx8MTc1ODgyOTY4Nnww&force=true" alt="Slide 5" class="w-full h-full object-cover">
+                        </div>
                     </div>
                 </div>
+            </div>
         </div>
     </section>
     <!-- Features Section -->
@@ -387,7 +486,7 @@
                 </div>
                 
                 <div class="bg-gray-800 rounded-xl overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Theme Example 2" class="w-full h-48 object-cover">
+                    <img src="https://unsplash.com/photos/FaPxZ88yZrw/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTF8fHRlY2h8ZW58MHwyfHx8MTc1ODgyOTM0M3ww&force=true" alt="Theme Example 2" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">Portfolio</h3>
                         <p class="text-gray-400 mb-4">Showcase your creative work with style</p>
@@ -682,6 +781,12 @@
         <button id="accept-cookies" class="bg-primary text-white px-4 py-2 rounded whitespace-nowrap">Okay</button>
     </div>
     
+    <!-- Paper Airplane Animation -->
+    <div id="airplane-trail" class="airplane-trail"></div>
+    <div id="paper-airplane" class="paper-airplane">
+        <i class="fas fa-paper-plane"></i>
+    </div>
+    
     <!-- JavaScript -->
     <script>
         // Handle dark mode
@@ -741,36 +846,157 @@
         
         // Add scroll event listener
         window.addEventListener('scroll', handleScrollAnimations);
-	document.addEventListener('DOMContentLoaded', () => {
-  tns({
-    container: '.tns-carousel',
-    items: 1,
-    slideBy: 'page',
-    autoplay: true,
-    autoplayButtonOutput: false,
-    controls: false,
-    nav: false,
-    gutter: 16,
-    swipeAngle: false,
-    mouseDrag: true,
-  });
-});
 
-gsap.registerPlugin(ScrollTrigger);
+        // GSAP ScrollTrigger initialization
+        gsap.registerPlugin(ScrollTrigger);
 
-  // target the row of slides
-  gsap.to("#scroll-slider > div", {
-    xPercent: -80,               // move left by 4 slides (5 slides → 80%)
-    ease: "none",
-    scrollTrigger: {
-      trigger: "#scroll-slider",
-      start: "top top",          // when slider top hits viewport top
-      end: "bottom+=200% top",   // lengthen scroll to suit (200% extra)
-      scrub: true,               // tie animation to scroll
-      pin: true,                 // pin slider in place
-      anticipatePin: 1,
-    }
-  });
+        // Initialize horizontal scroll slider
+        function initHorizontalSlider() {
+            const slider = document.querySelector("#scroll-slider");
+            const slides = document.querySelector("#scroll-slider > div");
+            
+            if (slider && slides) {
+                // Only enable GSAP animation on desktop
+                if (window.innerWidth > 768) {
+                    // Calculate precise scroll distance to keep last slide in view
+                    const slideCount = slides.children.length;
+                    const containerWidth = slider.offsetWidth;
+                    const totalSlidesWidth = slides.scrollWidth;
+                    
+                    // Calculate how much to scroll: move (slideCount - 1) slides worth
+                    // This leaves the last slide perfectly positioned in the container
+                    const scrollDistance = totalSlidesWidth - containerWidth;
+                    
+                    gsap.to(slides, {
+                        x: -scrollDistance,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: slider,
+                            start: "center center", // Wait until slider is centered in viewport
+                            end: "bottom+=300% center", // End point for scroll
+                            scrub: 1,
+                            pin: true,
+                            anticipatePin: 1,
+                            invalidateOnRefresh: true,
+                            onUpdate: function(self) {
+                                // Ensure we don't over-scroll past the last slide
+                                const maxScroll = -scrollDistance;
+                                const currentX = gsap.getProperty(slides, "x");
+                                if (currentX < maxScroll) {
+                                    gsap.set(slides, {x: maxScroll});
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        // Handle window resize
+        function handleResize() {
+            ScrollTrigger.refresh();
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initHorizontalSlider();
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', handleResize);
+        
+        // Paper airplane scroll animation
+        function initPaperAirplane() {
+            const airplane = document.getElementById('paper-airplane');
+            const trail = document.getElementById('airplane-trail');
+            const slider = document.querySelector('#scroll-slider');
+            const footer = document.querySelector('footer');
+            
+            if (!airplane || !trail || !slider || !footer) return;
+            
+            let isAirplaneActive = false;
+            const startOffset = slider.offsetTop + slider.offsetHeight + 100; // Start after slider
+            const endOffset = footer.offsetTop - 200; // Stop just before footer
+            
+            function updateAirplane() {
+                const scrollY = window.scrollY;
+                const windowHeight = window.innerHeight;
+                const windowWidth = window.innerWidth;
+                
+                // Check if we're past the slider section
+                if (scrollY > startOffset && scrollY < endOffset) {
+                    if (!isAirplaneActive) {
+                        airplane.classList.add('visible', 'flying');
+                        trail.classList.add('visible');
+                        isAirplaneActive = true;
+                    }
+                    
+                    // Calculate airplane position based on scroll progress
+                    const scrollProgress = (scrollY - startOffset) / (endOffset - startOffset);
+                    
+                    // Vertical position (following scroll with some offset)
+                    const maxTop = windowHeight - 150;
+                    const minTop = 150;
+                    const airplaneTop = minTop + (maxTop - minTop) * scrollProgress;
+                    
+                    // Horizontal swiveling from left edge to right edge
+                    const leftMargin = 100;
+                    const rightMargin = 100;
+                    const maxLeft = windowWidth - rightMargin;
+                    const minLeft = leftMargin;
+                    
+                    // Use sine wave for smooth swiveling motion
+                    const swivelingProgress = Math.sin(scrollProgress * Math.PI * 3) * 0.5 + 0.5;
+                    const airplaneLeft = minLeft + (maxLeft - minLeft) * swivelingProgress;
+                    
+                    // Position airplane
+                    airplane.style.top = `${Math.min(Math.max(airplaneTop, minTop), maxTop)}px`;
+                    airplane.style.left = `${airplaneLeft}px`;
+                    
+                    // Rotate airplane based on movement direction
+                    const prevLeft = parseFloat(airplane.dataset.prevLeft || airplaneLeft);
+                    const direction = airplaneLeft > prevLeft ? 1 : -1;
+                    const rotationAngle = direction * 15 * Math.sin(scrollProgress * Math.PI * 6);
+                    airplane.style.transform = `rotate(${rotationAngle}deg)`;
+                    airplane.dataset.prevLeft = airplaneLeft;
+                    
+                    // Update trail position and size
+                    const trailLength = Math.abs(airplaneLeft - prevLeft) + 50;
+                    const trailLeft = Math.min(airplaneLeft, prevLeft) - 25;
+                    trail.style.top = `${airplaneTop + 8}px`; // Slightly below airplane
+                    trail.style.left = `${trailLeft}px`;
+                    trail.style.width = `${trailLength}px`;
+                    
+                } else if (isAirplaneActive && (scrollY <= startOffset || scrollY >= endOffset)) {
+                    // Hide airplane when outside active zone
+                    airplane.classList.remove('visible', 'flying');
+                    trail.classList.remove('visible');
+                    isAirplaneActive = false;
+                }
+            }
+            
+            // Throttle scroll events for better performance
+            let ticking = false;
+            function onScroll() {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        updateAirplane();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }
+            
+            window.addEventListener('scroll', onScroll);
+            
+            // Initial check
+            updateAirplane();
+        }
+        
+        // Initialize paper airplane after DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initPaperAirplane();
+        });
     </script>
 </body>
 </html>
