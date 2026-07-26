@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Plans & Licensing | Droip WordPress Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#6366f1', secondary: '#f43f5e' },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], heading: ['Outfit', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #0f172a; }
+        h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #f43f5e 100%);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .btn-gradient { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #f43f5e 100%); }
+    </style>
+</head>
+<body class="antialiased bg-white text-slate-800">
+
+    <!-- Header Navigation -->
+    <header class="fixed w-full bg-white/90 backdrop-blur-md z-50 border-b border-slate-100 shadow-sm">
+        <div class="container mx-auto px-4 lg:px-8 py-3.5 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-2.5">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-rose-500 flex items-center justify-center shadow-md">
+                    <i class="fas fa-cubes text-white text-lg"></i>
+                </div>
+                <span class="text-2xl font-bold font-heading gradient-text">Droip</span>
+            </a>
+            
+            <nav class="hidden md:flex items-center space-x-7">
+                <a href="index.html" class="text-slate-600 hover:text-primary font-medium transition">Home</a>
+                <a href="editor.html" class="text-slate-600 hover:text-primary font-medium transition">Visual Editor</a>
+                <a href="grids.html" class="text-slate-600 hover:text-primary font-medium transition">Grids & Layouts</a>
+                <a href="typography.html" class="text-slate-600 hover:text-primary font-medium transition">Typography</a>
+                <a href="seo.html" class="text-slate-600 hover:text-primary font-medium transition">SEO & Speed</a>
+                <a href="pricing.html" class="text-slate-900 font-semibold hover:text-primary transition">Pricing</a>
+                <a href="resources.html" class="text-slate-600 hover:text-primary font-medium transition">Resources</a>
+            </nav>
+            
+            <div class="hidden md:flex items-center space-x-3">
+                <a href="login.html" class="text-slate-700 hover:text-primary font-semibold px-4 py-2 transition">Sign In</a>
+                <a href="get-started.html" class="btn-gradient text-white px-5 py-2.5 rounded-full font-medium text-sm">Get Started Free</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="pt-36 pb-16 px-4 bg-gradient-to-b from-slate-50 to-white text-center">
+        <div class="container mx-auto max-w-4xl">
+            <h1 class="text-4xl sm:text-5xl font-extrabold font-heading text-slate-900 mb-6">
+                Flexible Plans for <span class="gradient-text">Every Creator</span>
+            </h1>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-12">
+                14-day money back guarantee. No long-term contracts.
+            </p>
+        </div>
+    </section>
+
+    <!-- Pricing Grid -->
+    <section class="pb-24 px-4 bg-white">
+        <div class="container mx-auto max-w-6xl">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div class="rounded-3xl p-8 bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold font-heading mb-2">Starter Builder</h3>
+                        <p class="text-slate-500 text-sm mb-6">Personal site creators & freelancers.</p>
+                        <div class="text-4xl font-extrabold font-heading mb-6">$19 <span class="text-sm text-slate-500 font-normal">/ mo</span></div>
+                        <ul class="space-y-3 text-sm text-slate-600 mb-8">
+                            <li><i class="fas fa-check text-emerald-500 mr-2"></i> 1 Site License</li>
+                            <li><i class="fas fa-check text-emerald-500 mr-2"></i> Visual Drag & Drop Canvas</li>
+                            <li><i class="fas fa-check text-emerald-500 mr-2"></i> Standard CSS Grid</li>
+                        </ul>
+                    </div>
+                    <a href="get-started.html" class="w-full text-center py-3 rounded-full border border-slate-300 font-semibold text-slate-700 hover:bg-slate-50">Choose Starter</a>
+                </div>
+
+                <div class="rounded-3xl p-8 bg-white border-2 border-indigo-600 shadow-xl shadow-indigo-500/10 flex flex-col justify-between relative">
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-bold px-4 py-1 rounded-full uppercase">Popular</div>
+                    <div>
+                        <h3 class="text-xl font-bold font-heading mb-2">Pro Creator</h3>
+                        <p class="text-slate-500 text-sm mb-6">Agencies & professional site builders.</p>
+                        <div class="text-4xl font-extrabold font-heading text-indigo-600 mb-6">$39 <span class="text-sm text-slate-500 font-normal">/ mo</span></div>
+                        <ul class="space-y-3 text-sm text-slate-600 mb-8">
+                            <li><i class="fas fa-check text-emerald-500 mr-2"></i> 5 Site Licenses</li>
+                            <li><i class="fas fa-check text-emerald-500 mr-2"></i> Motion Timeline Editor</li>
+                            <li><i class="fas fa-check text-emerald-500 mr-2"></i> Droip AI Copilot</li>
+                            <li><i class="fas fa-check text-emerald-500 mr-2"></i> Dynamic CMS Manager</li>
+                        </ul>
+                    </div>
+                    <a href="get-started.html" class="w-full text-center py-3 rounded-full btn-gradient text-white font-semibold">Start Free Trial</a>
+                </div>
+
+                <div class="rounded-3xl p-8 bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold font-heading mb-2">Agency Unlimited</h3>
+                        <p class="text-slate-500 text-sm mb-6">Unlimited sites for agency teams.</p>
+                        <div class="text-4xl font-extrabold font-heading mb-6">$79 <span class="text-sm text-slate-500 font-normal">/ mo</span></div>
+                        <ul class="space-y-3 text-sm text-slate-600 mb-8">
+                            <li><i class="fas fa-check text-emerald-500 mr-2"></i> Unlimited Site Licenses</li>
+                            <li><i class="fas fa-check text-emerald-500 mr-2"></i> White Label Client Portal</li>
+                            <li><i class="fas fa-check text-emerald-500 mr-2"></i> Clean HTML/CSS Export</li>
+                        </ul>
+                    </div>
+                    <a href="get-started.html" class="w-full text-center py-3 rounded-full border border-slate-300 font-semibold text-slate-700 hover:bg-slate-50">Contact Sales</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-12 px-4 border-t border-slate-800">
+        <div class="container mx-auto text-center text-slate-400 text-sm">
+            <p>© 2026 Droip Technologies Inc. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

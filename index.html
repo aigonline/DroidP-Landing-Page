@@ -1,14 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Droip | No-Code website builder for WordPress</title>
+    <title>Droip | No-Code Visual Website Builder for WordPress</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <!-- Meta Descriptions & SEO -->
+    <meta name="description"
+        content="Droip is the ultimate visual drag-and-drop website builder for WordPress. Build responsive, pixel-perfect websites with CSS grid, animation timelines, dynamic CMS, and AI capabilities without writing code.">
+    <meta name="keywords"
+        content="WordPress builder, no-code site builder, visual CSS grid editor, Droip, website builder, WordPress plugin">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Google Fonts: Outfit & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -17,986 +39,1282 @@
                 extend: {
                     colors: {
                         primary: '#6366f1',
+                        'primary-dark': '#4f46e5',
                         secondary: '#f43f5e',
-                        dark: '#1e293b',
+                        accent: '#8b5cf6',
+                        dark: '#0f172a',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
                     },
+                    boxShadow: {
+                        'glow': '0 0 25px -5px rgba(99, 102, 241, 0.25)',
+                        'glow-lg': '0 20px 40px -15px rgba(99, 102, 241, 0.3)',
+                    }
                 }
             }
         }
     </script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
         body {
             font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
+            background-color: #ffffff;
+            color: #0f172a;
+            overflow-x: hidden;
         }
-        
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+
         .gradient-text {
-            background: linear-gradient(135deg, #6366f1 0%, #f43f5e 100%);
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #f43f5e 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-        
-        .btn-gradient {
-            background: linear-gradient(135deg, #6366f1 0%, #f43f5e 100%);
-            transition: all 0.3s ease;
+
+        .gradient-border {
+            border: 1px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, #6366f1, #f43f5e) border-box;
         }
-        
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #f43f5e 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         .btn-gradient:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 12px 24px -6px rgba(99, 102, 241, 0.4);
         }
-        
-        .feature-card {
-            transition: all 0.3s ease;
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
-        
-        .feature-card:hover {
+
+        .glass-card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card-hover:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 35px -10px rgba(99, 102, 241, 0.12);
+            border-color: rgba(99, 102, 241, 0.3);
         }
-        
-        .animate-on-scroll {
+
+        /* Slider Animation Custom Styling */
+        .slide-item {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            visibility: hidden;
+            transform: scale(0.96) translateX(20px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
-        
-        .animate-on-scroll.animated {
+
+        .slide-item.active {
             opacity: 1;
-            transform: translateY(0);
+            visibility: visible;
+            transform: scale(1) translateX(0);
+            position: relative;
         }
-        
-        /* Mobile navigation */
-        .mobile-nav {
-            transform: translateX(100%);
-            transition: transform 0.3s ease-in-out;
+
+        /* Slide progress tab indicator */
+        .tab-btn.active {
+            color: #6366f1;
+            background-color: #ffffff;
+            border-color: #6366f1;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
         }
-        
-        .mobile-nav.open {
-            transform: translateX(0);
-        }
-        
-        .dark .feature-card {
-            background-color: #1e293b;
-            border-color: #334155;
-        }
-        
-        .dark body {
-            background-color: #0f172a;
-            color: #f8fafc;
-        }
-        
-        /* Horizontal scroll slider styles */
-        #scroll-slider {
-            height: auto;
-        }
-        
-        #scroll-slider > div {
-            will-change: transform;
-        }
-        
-        /* Ensure slides maintain proper spacing on mobile */
-        @media (max-width: 768px) {
-            #scroll-slider {
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-            }
-            
-            #scroll-slider > div > div {
-                scroll-snap-align: center;
-                min-width: 280px;
-            }
-        }
-        
-        /* Paper airplane animation styles */
+
+        /* Paper Airplane Smooth Trail */
         .paper-airplane {
             position: fixed;
-            z-index: 40;
-            font-size: 36px;
+            z-index: 45;
+            font-size: 28px;
             color: #6366f1;
-            opacity: 0;
-            transform: rotate(0deg);
-            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             pointer-events: none;
-            filter: drop-shadow(0 2px 4px rgba(99, 102, 241, 0.3));
+            transition: transform 0.1s linear, top 0.15s ease-out, left 0.15s ease-out;
+            filter: drop-shadow(0 4px 12px rgba(99, 102, 241, 0.4));
         }
-        
-        .paper-airplane.visible {
-            opacity: 0.9;
-        }
-        
-        .paper-airplane.flying {
-            animation: paperFlyHorizontal 3s ease-in-out infinite;
-        }
-        
-        @keyframes paperFlyHorizontal {
-            0%, 100% {
-                transform: rotate(0deg) translateY(0px) scale(1);
-            }
-            25% {
-                transform: rotate(2deg) translateY(-2px) scale(1.05);
-            }
-            50% {
-                transform: rotate(-2deg) translateY(1px) scale(0.98);
-            }
-            75% {
-                transform: rotate(1deg) translateY(-1px) scale(1.02);
-            }
-        }
-        
-        /* Paper airplane trail/trace line */
-        .airplane-trail {
+
+        .paper-trail {
             position: fixed;
+            z-index: 44;
             height: 2px;
-            background: linear-gradient(90deg, transparent 0%, #6366f1 50%, transparent 100%);
-            opacity: 0;
-            z-index: 39;
-            transition: all 0.3s ease;
-            border-radius: 1px;
+            background: linear-gradient(90deg, transparent, #6366f1, #f43f5e, transparent);
+            pointer-events: none;
+            opacity: 0.5;
+            transition: all 0.2s ease;
         }
-        
-        .airplane-trail.visible {
-            opacity: 0.4;
-        }
-        
-        /* Hide on mobile for better performance */
-        @media (max-width: 768px) {
-            .paper-airplane, .airplane-trail {
-                display: none;
+
+        @keyframes pulse-subtle {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
             }
+
+            50% {
+                transform: scale(1.03);
+                opacity: 0.9;
+            }
+        }
+
+        .animate-pulse-subtle {
+            animation: pulse-subtle 4s ease-in-out infinite;
         }
     </style>
 </head>
-<body class="antialiased bg-white text-gray-800">
-    <!-- Header -->
-    <header class="fixed w-full bg-white/80 backdrop-blur-sm z-50 shadow-sm">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <!-- Logo -->
-            <a href="#" class="flex items-center">
-                <span class="text-2xl font-bold gradient-text">Droip</span>
+
+<body class="antialiased bg-white text-slate-800">
+
+    <!-- Header Navigation -->
+    <header
+        class="fixed w-full bg-white/90 backdrop-blur-md z-50 border-b border-slate-100 shadow-sm transition-all duration-300">
+        <div class="container mx-auto px-4 lg:px-8 py-3.5 flex justify-between items-center">
+
+            <!-- Logo & Version Badge -->
+            <a href="index.html" class="flex items-center space-x-2.5 group">
+                <div
+                    class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-rose-500 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+                    <i class="fas fa-cubes text-white text-lg"></i>
+                </div>
+                <span class="text-2xl font-bold font-heading gradient-text">Droip</span>
+                <span
+                    class="bg-indigo-50 text-indigo-600 text-xs font-semibold px-2 py-0.5 rounded-full border border-indigo-100">v2.5
+                    AI</span>
             </a>
-            
+
             <!-- Desktop Navigation -->
-            <nav class="hidden md:flex space-x-6">
-                <a href="#" class="text-gray-600 hover:text-primary font-medium transition">Home</a>
-                <div class="relative group">
-                    <a href="#" class="text-gray-600 hover:text-primary font-medium transition flex items-center">
-                        Product <i class="fas fa-chevron-down text-xs ml-1"></i>
-                    </a>
-                    <div class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Editor</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Grids & Layouts</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Typography</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">SEO</a>
+            <nav class="hidden md:flex items-center space-x-7">
+                <a href="index.html" class="text-slate-900 font-semibold hover:text-primary transition">Home</a>
+
+                <!-- Product Dropdown -->
+                <div class="relative group py-2">
+                    <button
+                        class="text-slate-600 hover:text-primary font-medium transition flex items-center space-x-1 focus:outline-none">
+                        <span>Product</span>
+                        <i class="fas fa-chevron-down text-xs ml-1 group-hover:rotate-180 transition-transform"></i>
+                    </button>
+                    <div
+                        class="absolute top-full left-0 w-60 bg-white rounded-2xl shadow-2xl py-3 px-2 border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-1">
+                        <a href="editor.html"
+                            class="flex items-center p-2.5 rounded-xl hover:bg-indigo-50/60 transition group/item">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3 group-hover/item:bg-indigo-600 group-hover/item:text-white transition">
+                                <i class="fas fa-pen-nib text-xs"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-semibold text-slate-800">Visual Editor</div>
+                                <div class="text-xs text-slate-500">Drag & drop canvas</div>
+                            </div>
+                        </a>
+                        <a href="grids.html"
+                            class="flex items-center p-2.5 rounded-xl hover:bg-indigo-50/60 transition group/item">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center mr-3 group-hover/item:bg-rose-600 group-hover/item:text-white transition">
+                                <i class="fas fa-th text-xs"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-semibold text-slate-800">Grids & Layouts</div>
+                                <div class="text-xs text-slate-500">CSS grid controller</div>
+                            </div>
+                        </a>
+                        <a href="typography.html"
+                            class="flex items-center p-2.5 rounded-xl hover:bg-indigo-50/60 transition group/item">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center mr-3 group-hover/item:bg-purple-600 group-hover/item:text-white transition">
+                                <i class="fas fa-font text-xs"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-semibold text-slate-800">Typography</div>
+                                <div class="text-xs text-slate-500">Granular font controls</div>
+                            </div>
+                        </a>
+                        <a href="seo.html"
+                            class="flex items-center p-2.5 rounded-xl hover:bg-indigo-50/60 transition group/item">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center mr-3 group-hover/item:bg-emerald-600 group-hover/item:text-white transition">
+                                <i class="fas fa-chart-line text-xs"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-semibold text-slate-800">SEO & Speed</div>
+                                <div class="text-xs text-slate-500">Automated optimization</div>
+                            </div>
+                        </a>
                     </div>
                 </div>
-                <a href="#" class="text-gray-600 hover:text-primary font-medium transition">Resources</a>
-                <a href="#" class="text-gray-600 hover:text-primary font-medium transition">Support</a>
-                <a href="#" class="text-gray-600 hover:text-primary font-medium transition">Pricing</a>
+
+                <a href="resources.html" class="text-slate-600 hover:text-primary font-medium transition">Resources</a>
+                <a href="pricing.html" class="text-slate-600 hover:text-primary font-medium transition">Pricing</a>
+                <a href="support.html" class="text-slate-600 hover:text-primary font-medium transition">Support</a>
             </nav>
-            
+
             <!-- Auth Buttons -->
-            <div class="hidden md:flex items-center space-x-4">
-                <a href="#" class="text-gray-600 hover:text-primary font-medium transition">Login</a>
-                <a href="#" class="btn-gradient text-white px-5 py-2 rounded-full font-medium">Get Started</a>
+            <div class="hidden md:flex items-center space-x-3">
+                <a href="login.html" class="text-slate-700 hover:text-primary font-semibold px-4 py-2 transition">Sign
+                    In</a>
+                <a href="get-started.html"
+                    class="btn-gradient text-white px-5 py-2.5 rounded-full font-medium shadow-md shadow-indigo-500/20 text-sm flex items-center space-x-1.5">
+                    <span>Get Started Free</span>
+                    <i class="fas fa-arrow-right text-xs"></i>
+                </a>
             </div>
-            
-            <!-- Mobile Menu Button -->
-            <button id="menu-button" class="md:hidden text-gray-600 focus:outline-none">
+
+            <!-- Mobile Menu Toggle -->
+            <button id="menu-button" class="md:hidden p-2 text-slate-700 focus:outline-none"
+                aria-label="Toggle Navigation Menu">
                 <i class="fas fa-bars text-xl"></i>
             </button>
         </div>
     </header>
-    
-    <!-- Mobile Navigation -->
-    <div id="mobile-nav" class="mobile-nav fixed top-0 right-0 h-full w-3/4 bg-white z-50 shadow-2xl p-6 md:hidden">
-        <div class="flex justify-between items-center mb-8">
-            <span class="text-2xl font-bold gradient-text">Droip</span>
-            <button id="close-menu" class="text-gray-600 focus:outline-none">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
-        <nav class="flex flex-col space-y-4">
-            <a href="#" class="text-gray-600 hover:text-primary font-medium transition py-2">Home</a>
-            <div class="relative">
-                <button class="w-full text-left text-gray-600 hover:text-primary font-medium transition py-2 flex items-center justify-between">
-                    Product <i class="fas fa-chevron-down text-xs"></i>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-nav"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden">
+        <div class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-white shadow-2xl p-6 overflow-y-auto transform translate-x-full transition-transform duration-300"
+            id="mobile-nav-panel">
+            <div class="flex justify-between items-center pb-6 border-b border-slate-100">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-rose-500 flex items-center justify-center">
+                        <i class="fas fa-cubes text-white text-sm"></i>
+                    </div>
+                    <span class="text-xl font-bold font-heading gradient-text">Droip</span>
+                </a>
+                <button id="close-menu" class="p-2 text-slate-500 hover:text-slate-800">
+                    <i class="fas fa-times text-xl"></i>
                 </button>
-                <div class="pl-4 mt-2 space-y-2 hidden">
-                    <a href="#" class="block py-2 text-sm text-gray-700">Editor</a>
-                    <a href="#" class="block py-2 text-sm text-gray-700">Grids & Layouts</a>
-                    <a href="#" class="block py-2 text-sm text-gray-700">Typography</a>
-                    <a href="#" class="block py-2 text-sm text-gray-700">SEO</a>
+            </div>
+
+            <nav class="py-6 space-y-3">
+                <a href="index.html" class="block py-2 text-slate-900 font-semibold hover:text-primary">Home</a>
+                <div class="space-y-2 pl-3 border-l-2 border-slate-100">
+                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Product Features</div>
+                    <a href="editor.html" class="block py-1.5 text-slate-700 hover:text-primary">Visual Editor</a>
+                    <a href="grids.html" class="block py-1.5 text-slate-700 hover:text-primary">Grids & Layouts</a>
+                    <a href="typography.html" class="block py-1.5 text-slate-700 hover:text-primary">Typography</a>
+                    <a href="seo.html" class="block py-1.5 text-slate-700 hover:text-primary">SEO & Speed</a>
                 </div>
-            </div>
-            <a href="#" class="text-gray-600 hover:text-primary font-medium transition py-2">Resources</a>
-            <a href="#" class="text-gray-600 hover:text-primary font-medium transition py-2">Support</a>
-            <a href="#" class="text-gray-600 hover:text-primary font-medium transition py-2">Pricing</a>
-            <div class="pt-4 space-y-4">
-                <a href="#" class="block text-center text-gray-600 hover:text-primary font-medium transition py-2">Login</a>
-                <a href="#" class="block text-center btn-gradient text-white py-3 rounded-full font-medium">Get Started</a>
-            </div>
-        </nav>
+                <a href="resources.html" class="block py-2 text-slate-700 hover:text-primary font-medium">Resources</a>
+                <a href="pricing.html" class="block py-2 text-slate-700 hover:text-primary font-medium">Pricing</a>
+                <a href="support.html" class="block py-2 text-slate-700 hover:text-primary font-medium">Support</a>
+
+                <div class="pt-6 space-y-3 border-t border-slate-100">
+                    <a href="login.html"
+                        class="block w-full text-center py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold">Sign
+                        In</a>
+                    <a href="get-started.html"
+                        class="block w-full text-center btn-gradient text-white py-3 rounded-xl font-semibold shadow-lg shadow-indigo-500/25">Get
+                        Started Free</a>
+                </div>
+            </nav>
+        </div>
     </div>
-    
-    
+
     <!-- Hero Section -->
-    <section class="pt-32 pb-10 px-4">
-        <div class="container mx-auto text-center">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">No-Code WordPress Site Builder<br><span class="gradient-text">Break Limits. Build Anything.</span><br>No Code Needed.</h1>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-10">Droip is a no-code, drag-and-drop WordPress builder that simplifies website creation with powerful capabilities.</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-                <a href="#" class="btn-gradient text-white px-8 py-3 rounded-full font-medium text-lg">Get started with Droip</a>
-                <a href="#" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-8 py-3 rounded-full font-medium text-lg transition flex items-center justify-center"><i class="fas fa-play-circle mr-2"></i> Watch Intro</a>
+    <section class="pt-36 pb-16 px-4 relative overflow-hidden bg-gradient-to-b from-slate-50/80 via-white to-white">
+
+        <!-- Ambient Glowing Orbs -->
+        <div
+            class="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-indigo-300/30 to-rose-300/20 blur-3xl rounded-full pointer-events-none -z-10 animate-pulse-subtle">
+        </div>
+
+        <div class="container mx-auto text-center max-w-5xl">
+
+            <!-- Release Pill -->
+            <div
+                class="inline-flex items-center space-x-2 bg-indigo-50/80 border border-indigo-100 hover:border-indigo-300 text-indigo-700 px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium mb-8 cursor-pointer transition-all hover:scale-105 shadow-sm">
+                <span
+                    class="bg-indigo-600 text-white px-2 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-wider">New</span>
+                <span>Droip AI 2.0 is live • Experience instant page generation</span>
+                <i class="fas fa-arrow-right text-xs text-indigo-500"></i>
             </div>
-            <div class="relative overflow-hidden max-w-[80%] mx-auto" id="scroll-slider">
-                <div class="flex h-96 md:h-[32rem] lg:h-[40rem]">
-                    <div class="w-full flex-shrink-0 px-2">
-                        <div class="bg-white rounded-lg shadow-xl overflow-hidden h-full">
-                            <img src="https://unsplash.com/photos/9AdeEdYB2yk/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTh8fHRlY2h8ZW58MHwyfHx8MTc1ODgyOTM0M3ww&force=true" alt="Slide 1" class="w-full h-full object-cover">
+
+            <!-- Main Headline -->
+            <h1
+                class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold font-heading text-slate-900 tracking-tight leading-[1.1] mb-6">
+                No-Code WordPress Builder.<br>
+                <span class="gradient-text">Break Limits. Build Anything.</span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto mb-10 leading-relaxed">
+                Droip gives visual creators, agencies, and developers complete control over CSS grid layouts, animation
+                timelines, dynamic CMS, and clean code generation — with zero coding.
+            </p>
+
+            <!-- Hero CTAs -->
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16">
+                <a href="get-started.html"
+                    class="w-full sm:w-auto btn-gradient text-white px-8 py-4 rounded-full font-semibold text-lg shadow-xl shadow-indigo-500/25 flex items-center justify-center space-x-2 group">
+                    <span>Build Your First Site Free</span>
+                    <i class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
+                </a>
+                <a href="#showcase-slider"
+                    class="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 px-8 py-4 rounded-full font-semibold text-lg transition flex items-center justify-center space-x-2 shadow-sm">
+                    <i class="fas fa-play-circle text-indigo-600 text-xl"></i>
+                    <span>Explore Interactive Demo</span>
+                </a>
+            </div>
+
+            <!-- HERO SLIDER SHOWCASE SECTION (ULTRA SMOOTH & INTERACTIVE) -->
+            <div id="showcase-slider" class="relative max-w-5xl mx-auto">
+
+                <!-- Slider Tab Navigation Header -->
+                <div
+                    class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 bg-slate-100/80 backdrop-blur-md p-2 rounded-2xl border border-slate-200/80 shadow-inner">
+                    <button
+                        class="tab-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center space-x-2 border border-transparent"
+                        data-slide="0">
+                        <i class="fas fa-desktop"></i>
+                        <span>Visual Editor</span>
+                    </button>
+                    <button
+                        class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center space-x-2 text-slate-600 hover:text-slate-900 border border-transparent"
+                        data-slide="1">
+                        <i class="fas fa-th"></i>
+                        <span>CSS Grid Engine</span>
+                    </button>
+                    <button
+                        class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center space-x-2 text-slate-600 hover:text-slate-900 border border-transparent"
+                        data-slide="2">
+                        <i class="fas fa-film"></i>
+                        <span>Motion Timeline</span>
+                    </button>
+                    <button
+                        class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center space-x-2 text-slate-600 hover:text-slate-900 border border-transparent"
+                        data-slide="3">
+                        <i class="fas fa-database"></i>
+                        <span>CMS & Media</span>
+                    </button>
+                    <button
+                        class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center space-x-2 text-slate-600 hover:text-slate-900 border border-transparent"
+                        data-slide="4">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                        <span>Droip AI</span>
+                    </button>
+                </div>
+
+                <!-- Main Display Card Frame -->
+                <div
+                    class="bg-slate-900 rounded-2xl shadow-2xl p-2 sm:p-3 border border-slate-800 relative overflow-hidden group">
+
+                    <!-- Browser Window Bar Header -->
+                    <div
+                        class="flex items-center justify-between px-4 py-2 bg-slate-800/90 rounded-t-xl mb-1 border-b border-slate-700/60">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+                        </div>
+                        <div
+                            class="bg-slate-950/80 text-slate-400 text-xs px-4 py-1 rounded-full font-mono flex items-center space-x-2 border border-slate-800">
+                            <i class="fas fa-lock text-[10px] text-emerald-400"></i>
+                            <span id="slide-url">droip.design/editor/workspace</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-slate-400 text-xs">
+                            <span
+                                class="hidden sm:inline bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded font-semibold text-[10px]">60
+                                FPS</span>
+                            <i class="fas fa-expand text-slate-400 hover:text-white cursor-pointer"></i>
                         </div>
                     </div>
-                    <div class="w-full flex-shrink-0 px-2">
-                        <div class="bg-white rounded-lg shadow-xl overflow-hidden h-full">
-                            <img src="https://unsplash.com/photos/mOwGqW_013c/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MjN8fHRlY2h8ZW58MHwyfHx8MTc1ODgwOTA4NXww&force=true" alt="Slide 2" class="w-full h-full object-cover">
+
+                    <!-- Slide Items Container -->
+                    <div
+                        class="relative w-full h-[320px] sm:h-[450px] md:h-[540px] rounded-b-xl overflow-hidden bg-slate-950">
+
+                        <!-- Slide 1: Visual Editor -->
+                        <div class="slide-item active" data-index="0">
+                            <img src="assets/images/editor_canvas.png" alt="Droip Visual Drag & Drop Editor Canvas"
+                                class="w-full h-full object-cover rounded-b-xl">
+                            <div
+                                class="absolute bottom-4 left-4 bg-slate-900/90 backdrop-blur-md text-white px-4 py-2 rounded-xl text-xs font-semibold border border-slate-700 shadow-lg flex items-center space-x-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                                <span>Visual Drag & Drop Engine • 100% Canvas Accuracy</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="w-full flex-shrink-0 px-2">
-                        <div class="bg-white rounded-lg shadow-xl overflow-hidden h-full">
-                            <img src="https://unsplash.com/photos/APHlCkuUXfU/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8NTR8fHRlY2h8ZW58MHwyfHx8MTc1ODgyOTY3MXww&force=true" alt="Slide 3" class="w-full h-full object-cover">
+
+                        <!-- Slide 2: CSS Grid Engine -->
+                        <div class="slide-item" data-index="1">
+                            <img src="assets/images/grid_builder.png" alt="Droip CSS Grid Visual Layout Builder"
+                                class="w-full h-full object-cover rounded-b-xl">
+                            <div
+                                class="absolute bottom-4 left-4 bg-slate-900/90 backdrop-blur-md text-white px-4 py-2 rounded-xl text-xs font-semibold border border-slate-700 shadow-lg flex items-center space-x-2">
+                                <i class="fas fa-th text-indigo-400"></i>
+                                <span>Visual CSS Grid & Flexbox Controller</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="w-full flex-shrink-0 px-2">
-                        <div class="bg-white rounded-lg shadow-xl overflow-hidden h-full">
-                            <img src="https://unsplash.com/photos/FFMcFwIUM5Y/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8NjB8fHRlY2h8ZW58MHwyfHx8MTc1ODgyOTY3MXww&force=true" alt="Slide 4" class="w-full h-full object-cover">
+
+                        <!-- Slide 3: Motion Timeline -->
+                        <div class="slide-item" data-index="2">
+                            <img src="assets/images/animation_timeline.png"
+                                alt="Droip Motion and Animation Timeline Editor"
+                                class="w-full h-full object-cover rounded-b-xl">
+                            <div
+                                class="absolute bottom-4 left-4 bg-slate-900/90 backdrop-blur-md text-white px-4 py-2 rounded-xl text-xs font-semibold border border-slate-700 shadow-lg flex items-center space-x-2">
+                                <i class="fas fa-film text-rose-400"></i>
+                                <span>Keyframe Animation Editor & Custom Easing</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="w-full flex-shrink-0 px-2">
-                        <div class="bg-white rounded-lg shadow-xl overflow-hidden h-full">
-                            <img src="https://unsplash.com/photos/qeICalRUfMU/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8ODB8fHRlY2h8ZW58MHwyfHx8MTc1ODgyOTY4Nnww&force=true" alt="Slide 5" class="w-full h-full object-cover">
+
+                        <!-- Slide 4: CMS & Media -->
+                        <div class="slide-item" data-index="3">
+                            <img src="assets/images/cms_media.png" alt="Droip CMS Database & Media Asset Manager"
+                                class="w-full h-full object-cover rounded-b-xl">
+                            <div
+                                class="absolute bottom-4 left-4 bg-slate-900/90 backdrop-blur-md text-white px-4 py-2 rounded-xl text-xs font-semibold border border-slate-700 shadow-lg flex items-center space-x-2">
+                                <i class="fas fa-database text-purple-400"></i>
+                                <span>Native Dynamic CMS Collections & Media Library</span>
+                            </div>
                         </div>
+
+                        <!-- Slide 5: Droip AI -->
+                        <div class="slide-item" data-index="4">
+                            <img src="assets/images/ai_builder.png" alt="Droip AI Website Generator Assistant"
+                                class="w-full h-full object-cover rounded-b-xl">
+                            <div
+                                class="absolute bottom-4 left-4 bg-slate-900/90 backdrop-blur-md text-white px-4 py-2 rounded-xl text-xs font-semibold border border-slate-700 shadow-lg flex items-center space-x-2">
+                                <i class="fas fa-wand-magic-sparkles text-amber-400"></i>
+                                <span>Droip AI • Prompt to Production-Ready Layout</span>
+                            </div>
+                        </div>
+
                     </div>
+
+                    <!-- Slide Controls (Prev / Next Buttons) -->
+                    <button id="prev-slide"
+                        class="absolute left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-slate-900/80 text-white hover:bg-indigo-600 backdrop-blur-md border border-slate-700 flex items-center justify-center transition shadow-xl"
+                        aria-label="Previous Slide">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button id="next-slide"
+                        class="absolute right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-slate-900/80 text-white hover:bg-indigo-600 backdrop-blur-md border border-slate-700 flex items-center justify-center transition shadow-xl"
+                        aria-label="Next Slide">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Trust & Metrics Bar -->
+    <section class="py-12 bg-white border-y border-slate-100">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="p-4">
+                    <div class="text-3xl sm:text-4xl font-extrabold font-heading text-indigo-600 mb-1">99/100</div>
+                    <div class="text-sm font-medium text-slate-500">Google PageSpeed Score</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-3xl sm:text-4xl font-extrabold font-heading text-rose-500 mb-1">10x</div>
+                    <div class="text-sm font-medium text-slate-500">Faster Development Speed</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-3xl sm:text-4xl font-extrabold font-heading text-purple-600 mb-1">0 KB</div>
+                    <div class="text-sm font-medium text-slate-500">Unnecessary Bloat Code</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-3xl sm:text-4xl font-extrabold font-heading text-emerald-600 mb-1">100,000+</div>
+                    <div class="text-sm font-medium text-slate-500">Active WordPress Sites</div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Features Section -->
-    <section class="py-20 px-4 bg-gray-50">
-        <div class="container mx-auto">
-            <div class="text-center mb-16 animate-on-scroll">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Design pixel-perfect sites beyond ordinary</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Create stunning websites with powerful tools that give you complete control.</p>
+
+    <!-- Core Features Grid Section -->
+    <section class="py-24 px-4 bg-slate-50/60" id="features">
+        <div class="container mx-auto max-w-6xl">
+
+            <div class="text-center mb-16 max-w-3xl mx-auto">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-slate-900 mb-4">
+                    Design pixel-perfect sites <span class="gradient-text">beyond ordinary limits</span>
+                </h2>
+                <p class="text-lg text-slate-600">
+                    Droip provides professional web design tools inside WordPress. Experience complete freedom without
+                    touching code.
+                </p>
             </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="feature-card bg-white rounded-xl p-8 shadow-sm border border-gray-100 animate-on-scroll" data-delay="0">
-                    <div class="mb-4">
-                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4"><i class="fas fa-text-height text-primary text-xl"></i></div>
-                        <h3 class="text-xl font-bold mb-2">Advanced typography</h3>
-                    </div>
-                    <p class="text-gray-600 mb-4">Take full control over your text with precision typography tools. Adjust fonts, spacing, and styles to add more character to your design.</p>
-                    <a href="#" class="text-primary font-medium hover:underline flex items-center">View Details <i class="fas fa-arrow-right ml-2"></i></a>
-                </div>
-                <div class="feature-card bg-white rounded-xl p-8 shadow-sm border border-gray-100 animate-on-scroll" data-delay="150">
-                    <div class="mb-4">
-                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4"><i class="fas fa-border-all text-primary text-xl"></i></div>
-                        <h3 class="text-xl font-bold mb-2">CSS grids and layouts</h3>
-                    </div>
-                    <p class="text-gray-600 mb-4">Build complex layouts with ease using CSS Grids. Create multi-directional structures, manage spacing, and achieve perfect alignment without limitations.</p>
-                    <a href="#" class="text-primary font-medium hover:underline flex items-center">View Details <i class="fas fa-arrow-right ml-2"></i></a>
-                </div>
-                <div class="feature-card bg-white rounded-xl p-8 shadow-sm border border-gray-100 animate-on-scroll" data-delay="300">
-                    <div class="mb-4">
-                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4"><i class="fas fa-mobile-alt text-primary text-xl"></i></div>
-                        <h3 class="text-xl font-bold mb-2">Adaptive design</h3>
-                    </div>
-                    <p class="text-gray-600 mb-4">Ensure flawless responsiveness across all devices. Design with adaptive elements that adjust seamlessly to different screen sizes and resolutions.</p>
-                </div>
-                <div class="feature-card bg-white rounded-xl p-8 shadow-sm border border-gray-100 animate-on-scroll" data-delay="450">
-                    <div class="mb-4">
-                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4"><i class="fas fa-clock text-primary text-xl"></i></div>
-                        <h3 class="text-xl font-bold mb-2">Designed for efficiency</h3>
-                    </div>
-                    <p class="text-gray-600 mb-4">Streamline your workflow with intuitive tools that simplify layout structuring. Save time while maintaining complete design accuracy and flexibility.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Interactions Section -->
-    <section class="py-20 px-4">
-        <div class="container mx-auto">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-12 md:mb-0 animate-on-scroll">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Craft engaging and immersive interactions</h2>
-                    
-                    <div class="space-y-8">
-                        <div class="flex">
-                            <div class="mr-4">
-                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-film text-primary"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold mb-2">Advanced interaction timeline</h3>
-                                <p class="text-gray-600">
-                                    Design smooth, multi-step animations with a timeline-based editor for complete control.
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex">
-                            <div class="mr-4">
-                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-stopwatch text-primary"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold mb-2">Custom timing editor</h3>
-                                <p class="text-gray-600">
-                                    Fine-tune every interaction to deliver flawless performance by adjusting delays, durations, easing functions, and more.
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex">
-                            <div class="mr-4">
-                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-magic text-primary"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold mb-2">Advanced triggers</h3>
-                                <p class="text-gray-600">
-                                    Trigger animations based on scrolling, hovering, page load, and more for a dynamic experience.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="md:w-1/2 animate-on-scroll" data-delay="200">
-                    <div class="bg-gray-100 rounded-xl p-4">
-                        <div class="bg-white rounded-lg shadow-xl overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1593720213428-28a5b9e94613?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" alt="Interaction Editor" class="w-full">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Content Manager Section -->
-    <section class="py-20 px-4 bg-gray-50">
-        <div class="container mx-auto">
-            <div class="text-center mb-16 animate-on-scroll">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Scale your business with</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
                 <!-- Feature 1 -->
-                <div class="feature-card bg-white rounded-xl p-8 shadow-sm border border-gray-100 animate-on-scroll">
-                    <div class="mb-4">
-                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-                            <i class="fas fa-database text-primary text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">Content Manager</h3>
+                <div
+                    class="glass-card glass-card-hover rounded-3xl p-8 bg-white border border-slate-200/80 shadow-sm relative overflow-hidden">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-6 border border-indigo-100">
+                        <i class="fas fa-font"></i>
                     </div>
-                    <p class="text-gray-600 mb-4">
-                        Handle dynamic data with the built-in content manager. Link data dynamically to any part of your website.
+                    <h3 class="text-2xl font-bold font-heading text-slate-900 mb-3">Advanced Typography Controls</h3>
+                    <p class="text-slate-600 leading-relaxed mb-6">
+                        Fine-tune fonts, line heights, letter spacing, font pairs, and fluid responsive typography
+                        scales with instant live preview across all breakpoints.
                     </p>
-                    <a href="#" class="text-primary font-medium hover:underline flex items-center">
-                        View Details <i class="fas fa-arrow-right ml-2"></i>
+                    <a href="typography.html"
+                        class="inline-flex items-center text-indigo-600 font-semibold hover:text-indigo-700 transition">
+                        <span>Explore Typography Engine</span>
+                        <i class="fas fa-arrow-right ml-2 text-xs"></i>
                     </a>
                 </div>
-                
+
                 <!-- Feature 2 -->
-                <div class="feature-card bg-white rounded-xl p-8 shadow-sm border border-gray-100 animate-on-scroll" data-delay="200">
-                    <div class="mb-4">
-                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-                            <i class="fas fa-images text-primary text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">Media Manager</h3>
+                <div
+                    class="glass-card glass-card-hover rounded-3xl p-8 bg-white border border-slate-200/80 shadow-sm relative overflow-hidden">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-2xl mb-6 border border-rose-100">
+                        <i class="fas fa-th-large"></i>
                     </div>
-                    <p class="text-gray-600 mb-4">
-                        Organize and edit all media assets, including SVGs, Lottie, and icons, with the built-in image and shape editor.
+                    <h3 class="text-2xl font-bold font-heading text-slate-900 mb-3">CSS Grid & Flexbox Studio</h3>
+                    <p class="text-slate-600 leading-relaxed mb-6">
+                        Build complex multi-directional grid structures, manage gap sizes, align elements effortlessly,
+                        and customize track templates visually.
                     </p>
-                    <a href="#" class="text-primary font-medium hover:underline flex items-center">
-                        View Details <i class="fas fa-arrow-right ml-2"></i>
+                    <a href="grids.html"
+                        class="inline-flex items-center text-rose-600 font-semibold hover:text-rose-700 transition">
+                        <span>Master CSS Grids</span>
+                        <i class="fas fa-arrow-right ml-2 text-xs"></i>
                     </a>
                 </div>
-                
+
                 <!-- Feature 3 -->
-                <div class="feature-card bg-white rounded-xl p-8 shadow-sm border border-gray-100 animate-on-scroll" data-delay="300">
-                    <div class="mb-4">
-                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-                            <i class="fas fa-search text-primary text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">SEO</h3>
+                <div
+                    class="glass-card glass-card-hover rounded-3xl p-8 bg-white border border-slate-200/80 shadow-sm relative overflow-hidden">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl mb-6 border border-purple-100">
+                        <i class="fas fa-mobile-screen-button"></i>
                     </div>
-                    <p class="text-gray-600 mb-4">
-                        Dynamically update SEO content across pages to optimize your website's search performance.
+                    <h3 class="text-2xl font-bold font-heading text-slate-900 mb-3">Unlimited Custom Breakpoints</h3>
+                    <p class="text-slate-600 leading-relaxed mb-6">
+                        Ensure flawless responsiveness across mobile, tablet, desktop, and ultra-wide screens with full
+                        control over custom media queries.
                     </p>
-                    <a href="#" class="text-primary font-medium hover:underline flex items-center">
-                        View Details <i class="fas fa-arrow-right ml-2"></i>
+                    <a href="editor.html"
+                        class="inline-flex items-center text-purple-600 font-semibold hover:text-purple-700 transition">
+                        <span>View Responsive Controls</span>
+                        <i class="fas fa-arrow-right ml-2 text-xs"></i>
                     </a>
                 </div>
+
+                <!-- Feature 4 -->
+                <div
+                    class="glass-card glass-card-hover rounded-3xl p-8 bg-white border border-slate-200/80 shadow-sm relative overflow-hidden">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-6 border border-emerald-100">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-heading text-slate-900 mb-3">Lightning Clean Code Output</h3>
+                    <p class="text-slate-600 leading-relaxed mb-6">
+                        Droip outputs pure, standard HTML, CSS, and JS without heavy wrapper divs or proprietary
+                        lock-in. Sites load in a fraction of a second.
+                    </p>
+                    <a href="seo.html"
+                        class="inline-flex items-center text-emerald-600 font-semibold hover:text-emerald-700 transition">
+                        <span>Check Performance Specs</span>
+                        <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Interactive Motion & Timeline Section -->
+    <section class="py-24 px-4 bg-white">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+
+                <div class="lg:w-1/2">
+                    <div
+                        class="inline-block bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 border border-indigo-100">
+                        Motion Architecture</div>
+                    <h2
+                        class="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-slate-900 mb-6 leading-tight">
+                        Craft engaging & immersive <span class="gradient-text">motion interactions</span>
+                    </h2>
+                    <p class="text-lg text-slate-600 mb-8 leading-relaxed">
+                        Bring your web pages to life with keyframe timelines, scroll-driven triggers, hover effects, and
+                        spring physics easing functions.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold flex-shrink-0 mt-1">
+                                <i class="fas fa-timeline"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-slate-900 mb-1">Visual Timeline Editor</h4>
+                                <p class="text-slate-600">Multi-layer animation timeline with visual keyframes and
+                                    duration control.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold flex-shrink-0 mt-1">
+                                <i class="fas fa-bezier-curve"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-slate-900 mb-1">Custom Cubic-Bezier Curves</h4>
+                                <p class="text-slate-600">Adjust physics and easing curves for silky smooth element
+                                    motions.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center font-bold flex-shrink-0 mt-1">
+                                <i class="fas fa-hand-pointer"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-slate-900 mb-1">Advanced Scroll & Mouse Triggers</h4>
+                                <p class="text-slate-600">Trigger animations on viewport enter, scroll progress, click,
+                                    or hover.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:w-1/2 w-full">
+                    <div class="bg-slate-900 rounded-3xl p-3 shadow-2xl border border-slate-800">
+                        <img src="assets/images/animation_timeline.png" alt="Droip Motion Editor Feature Preview"
+                            class="rounded-2xl w-full h-auto object-cover">
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
-    
-    <!-- Pixel Perfect Section -->
-    <section class="py-20 px-4">
-        <div class="container mx-auto">
-            <div class="text-center max-w-3xl mx-auto animate-on-scroll">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6">Create <span class="gradient-text">pixel-perfect accuracy in the atomic level</span></h2>
-                <p class="text-lg text-gray-600 mb-8">
-                    Create your website from the ground up with complete control over every element, down to the smallest detail.
+
+    <!-- Theme & Template Showcase -->
+    <section class="py-24 px-4 bg-slate-900 text-white relative">
+        <div class="container mx-auto max-w-6xl">
+
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span
+                    class="bg-indigo-500/20 text-indigo-300 text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider border border-indigo-500/30">Ready-To-Launch</span>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mt-4 mb-6">
+                    Beautifully crafted themes & site sections
+                </h2>
+                <p class="text-lg text-slate-300">
+                    Jumpstart your next project with high-converting pre-built templates designed for SaaS, E-Commerce,
+                    Agencies, and Portfolios.
                 </p>
-                <a href="#" class="btn-gradient text-white px-8 py-3 rounded-full font-medium text-lg inline-block">
-                    Get Started With Tutorials
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <!-- Template 1 -->
+                <div
+                    class="bg-slate-800/80 rounded-2xl overflow-hidden border border-slate-700/80 hover:border-indigo-500 transition duration-300 group">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="assets/images/theme_saas.png" alt="SaaS Theme Template"
+                            class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div
+                            class="absolute inset-0 bg-indigo-900/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <a href="get-started.html"
+                                class="bg-white text-slate-900 font-semibold px-4 py-2 rounded-full text-sm shadow-lg">Preview
+                                Theme</a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-xs text-indigo-400 font-semibold mb-1 uppercase tracking-wider">SaaS & Tech
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Nexus SaaS Platform</h3>
+                        <p class="text-slate-400 text-sm mb-4">Complete landing page with pricing, features, and
+                            authentication layouts.</p>
+                    </div>
+                </div>
+
+                <!-- Template 2 -->
+                <div
+                    class="bg-slate-800/80 rounded-2xl overflow-hidden border border-slate-700/80 hover:border-rose-500 transition duration-300 group">
+                    <div class="relative h-56 overflow-hidden bg-slate-950">
+                        <img src="assets/images/cms_media.png" alt="Portfolio Theme Template"
+                            class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div
+                            class="absolute inset-0 bg-rose-900/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <a href="get-started.html"
+                                class="bg-white text-slate-900 font-semibold px-4 py-2 rounded-full text-sm shadow-lg">Preview
+                                Theme</a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-xs text-rose-400 font-semibold mb-1 uppercase tracking-wider">Agency & Creative
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Studio Horizon Portfolio</h3>
+                        <p class="text-slate-400 text-sm mb-4">Sleek dark aesthetics for designers, agencies, and
+                            creative directors.</p>
+                    </div>
+                </div>
+
+                <!-- Template 3 -->
+                <div
+                    class="bg-slate-800/80 rounded-2xl overflow-hidden border border-slate-700/80 hover:border-purple-500 transition duration-300 group">
+                    <div class="relative h-56 overflow-hidden bg-slate-950">
+                        <img src="assets/images/editor_canvas.png" alt="E-Commerce Theme Template"
+                            class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div
+                            class="absolute inset-0 bg-purple-900/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <a href="get-started.html"
+                                class="bg-white text-slate-900 font-semibold px-4 py-2 rounded-full text-sm shadow-lg">Preview
+                                Theme</a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-xs text-purple-400 font-semibold mb-1 uppercase tracking-wider">WooCommerce
+                            Store</div>
+                        <h3 class="text-xl font-bold mb-2">Aura Luxury Shop</h3>
+                        <p class="text-slate-400 text-sm mb-4">Fully responsive e-commerce site template with product
+                            grid and checkout integration.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Interactive Pricing Section -->
+    <section class="py-24 px-4 bg-white" id="pricing">
+        <div class="container mx-auto max-w-6xl">
+
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-slate-900 mb-4">
+                    Simple, transparent pricing
+                </h2>
+                <p class="text-lg text-slate-600 mb-8">
+                    Choose the plan that best fits your workflow. Upgrade or cancel anytime.
+                </p>
+
+                <!-- Billing Toggle -->
+                <div class="inline-flex items-center space-x-3 bg-slate-100 p-1.5 rounded-full border border-slate-200">
+                    <button id="btn-monthly"
+                        class="px-5 py-2 rounded-full text-sm font-semibold bg-white text-slate-900 shadow-sm transition">Monthly
+                        Billing</button>
+                    <button id="btn-yearly"
+                        class="px-5 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-slate-900 transition flex items-center space-x-1.5">
+                        <span>Annual Billing</span>
+                        <span
+                            class="bg-rose-500 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full">Save
+                            20%</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+
+                <!-- Starter Plan -->
+                <div
+                    class="glass-card rounded-3xl p-8 bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold font-heading text-slate-900 mb-2">Starter Builder</h3>
+                        <p class="text-slate-500 text-sm mb-6">Ideal for personal sites & freelancers getting started.
+                        </p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-extrabold font-heading text-slate-900 price-val">$19</span>
+                            <span class="text-slate-500 text-sm">/ month</span>
+                        </div>
+                        <ul class="space-y-3.5 text-sm text-slate-600 mb-8">
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-500 mr-3"></i> 1 WordPress
+                                Site License</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-500 mr-3"></i> Full Drag &
+                                Drop Visual Editor</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-500 mr-3"></i> Basic CSS
+                                Grid Controls</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-500 mr-3"></i> 50+
+                                Template Sections</li>
+                            <li class="flex items-center text-slate-400"><i class="fas fa-times mr-3"></i> Droip AI
+                                Assistant</li>
+                        </ul>
+                    </div>
+                    <a href="get-started.html"
+                        class="w-full text-center py-3 rounded-full border border-slate-300 font-semibold text-slate-700 hover:bg-slate-50 transition">Get
+                        Started</a>
+                </div>
+
+                <!-- Pro Plan (Featured) -->
+                <div
+                    class="glass-card rounded-3xl p-8 bg-white border-2 border-indigo-600 shadow-xl shadow-indigo-500/10 flex flex-col justify-between relative transform md:-translate-y-2">
+                    <div
+                        class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-rose-500 text-white text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider shadow-md">
+                        Most Popular
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold font-heading text-slate-900 mb-2">Pro Creator</h3>
+                        <p class="text-slate-500 text-sm mb-6">For professional site builders and growing businesses.
+                        </p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-extrabold font-heading text-indigo-600 price-val">$39</span>
+                            <span class="text-slate-500 text-sm">/ month</span>
+                        </div>
+                        <ul class="space-y-3.5 text-sm text-slate-600 mb-8">
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-500 mr-3"></i> 5 WordPress
+                                Site Licenses</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-500 mr-3"></i> Advanced
+                                Motion Timeline Editor</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-500 mr-3"></i> Full
+                                Dynamic CMS & Media Manager</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-500 mr-3"></i> Droip AI
+                                Assistant Included</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-500 mr-3"></i> Priority
+                                Customer Support</li>
+                        </ul>
+                    </div>
+                    <a href="get-started.html"
+                        class="w-full text-center py-3 rounded-full btn-gradient text-white font-semibold shadow-md shadow-indigo-500/20">Start
+                        14-Day Free Trial</a>
+                </div>
+
+                <!-- Agency Plan -->
+                <div
+                    class="glass-card rounded-3xl p-8 bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold font-heading text-slate-900 mb-2">Agency Unlimited</h3>
+                        <p class="text-slate-500 text-sm mb-6">Unlimited power for digital agencies & teams.</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-extrabold font-heading text-slate-900 price-val">$79</span>
+                            <span class="text-slate-500 text-sm">/ month</span>
+                        </div>
+                        <ul class="space-y-3.5 text-sm text-slate-600 mb-8">
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-500 mr-3"></i> Unlimited
+                                Site Licenses</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-500 mr-3"></i> White-Label
+                                Client Portal</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-500 mr-3"></i> Custom Code
+                                Export & API</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-500 mr-3"></i> Unlimited
+                                Droip AI Generation</li>
+                            <li class="flex items-center"><i class="fas fa-check text-emerald-500 mr-3"></i> 24/7
+                                Dedicated Account Manager</li>
+                        </ul>
+                    </div>
+                    <a href="get-started.html"
+                        class="w-full text-center py-3 rounded-full border border-slate-300 font-semibold text-slate-700 hover:bg-slate-50 transition">Contact
+                        Sales</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-24 px-4 bg-slate-50/60" id="faq">
+        <div class="container mx-auto max-w-4xl">
+
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold font-heading text-slate-900 mb-4">
+                    Frequently Asked Questions
+                </h2>
+                <p class="text-slate-600">Everything you need to know about Droip visual WordPress builder.</p>
+            </div>
+
+            <div class="space-y-4">
+
+                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm cursor-pointer faq-item">
+                    <div class="flex justify-between items-center font-bold text-slate-900 text-lg">
+                        <span>Is Droip compatible with existing WordPress themes?</span>
+                        <i class="fas fa-chevron-down text-slate-400 faq-icon transition-transform"></i>
+                    </div>
+                    <div
+                        class="faq-content hidden mt-4 text-slate-600 text-sm leading-relaxed border-t border-slate-100 pt-3">
+                        Yes! Droip works seamlessly alongside any standard WordPress theme or can be used as a
+                        standalone canvas builder to construct full theme templates from scratch.
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm cursor-pointer faq-item">
+                    <div class="flex justify-between items-center font-bold text-slate-900 text-lg">
+                        <span>Does Droip slow down my website performance?</span>
+                        <i class="fas fa-chevron-down text-slate-400 faq-icon transition-transform"></i>
+                    </div>
+                    <div
+                        class="faq-content hidden mt-4 text-slate-600 text-sm leading-relaxed border-t border-slate-100 pt-3">
+                        Not at all. Droip compiles visual layouts into minified, native HTML and CSS without heavy
+                        JavaScript runtime libraries. Sites built with Droip consistently score 95+ on Google PageSpeed
+                        Insights.
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm cursor-pointer faq-item">
+                    <div class="flex justify-between items-center font-bold text-slate-900 text-lg">
+                        <span>Can I export the code generated by Droip?</span>
+                        <i class="fas fa-chevron-down text-slate-400 faq-icon transition-transform"></i>
+                    </div>
+                    <div
+                        class="faq-content hidden mt-4 text-slate-600 text-sm leading-relaxed border-t border-slate-100 pt-3">
+                        Yes, Pro and Agency plans allow clean HTML/CSS code export so you can use your designs in
+                        external projects or static hosting environments.
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm cursor-pointer faq-item">
+                    <div class="flex justify-between items-center font-bold text-slate-900 text-lg">
+                        <span>How does Droip AI page generation work?</span>
+                        <i class="fas fa-chevron-down text-slate-400 faq-icon transition-transform"></i>
+                    </div>
+                    <div
+                        class="faq-content hidden mt-4 text-slate-600 text-sm leading-relaxed border-t border-slate-100 pt-3">
+                        Simply enter a natural language prompt (e.g., "Build an agency landing page for a video
+                        production company"), and Droip AI will automatically structure layout grids, copy, images, and
+                        color palettes directly on your canvas.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom CTA Banner -->
+    <section
+        class="py-20 px-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-rose-600 text-white relative overflow-hidden">
+        <div class="container mx-auto text-center max-w-4xl relative z-10">
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading mb-6 leading-tight">
+                Ready to break web design limits?
+            </h2>
+            <p class="text-lg text-indigo-100 max-w-2xl mx-auto mb-10">
+                Join over 100,000 creators and agencies building faster, cleaner WordPress sites with Droip.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="get-started.html"
+                    class="bg-white text-slate-900 hover:bg-slate-100 px-8 py-4 rounded-full font-bold text-lg shadow-2xl transition hover:scale-105">
+                    Start Building Free
+                </a>
+                <a href="pricing.html"
+                    class="bg-indigo-700/50 hover:bg-indigo-700 border border-indigo-300/40 text-white px-8 py-4 rounded-full font-bold text-lg transition">
+                    View Pricing Plans
                 </a>
             </div>
         </div>
     </section>
-    
-    <!-- Themes Section -->
-    <section class="py-20 px-4 bg-gray-900 text-white">
-        <div class="container mx-auto">
-            <div class="text-center mb-16 animate-on-scroll">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Jumpstart your business with beautifully crafted themes and sections</h2>
-                <p class="text-lg text-gray-300 max-w-2xl mx-auto">
-                    Launch with ease using stunning, ready-to-use themes & sections designed for every need.
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 animate-on-scroll">
-                <div class="bg-gray-800 rounded-xl overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1541462608143-67571c6738dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Theme Example 1" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Business Site</h3>
-                        <p class="text-gray-400 mb-4">Professional theme for corporate websites</p>
-                        <a href="#" class="text-primary hover:underline">View Theme</a>
-                    </div>
-                </div>
-                
-                <div class="bg-gray-800 rounded-xl overflow-hidden">
-                    <img src="https://unsplash.com/photos/FaPxZ88yZrw/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTF8fHRlY2h8ZW58MHwyfHx8MTc1ODgyOTM0M3ww&force=true" alt="Theme Example 2" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Portfolio</h3>
-                        <p class="text-gray-400 mb-4">Showcase your creative work with style</p>
-                        <a href="#" class="text-primary hover:underline">View Theme</a>
-                    </div>
-                </div>
-                
-                <div class="bg-gray-800 rounded-xl overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1559598467-f8b76c8155d0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Theme Example 3" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">E-commerce</h3>
-                        <p class="text-gray-400 mb-4">Start selling online with a premium shop design</p>
-                        <a href="#" class="text-primary hover:underline">View Theme</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Benefits Section -->
-    <section class="py-20 px-4">
-        <div class="container mx-auto">
-            <div class="max-w-3xl mx-auto mb-16 text-center animate-on-scroll">
-                <h2 class="text-2xl bg-clip-text font-bold mb-4 inline-block py-1 px-4 rounded-lg bg-gray-100">Low third-party dependencies</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="text-center animate-on-scroll">
-                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-4 mx-auto">
-                        <i class="fas fa-sliders-h text-primary text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">More control, less reliance</h3>
-                    <p class="text-gray-600">
-                        Get complete control over your website's performance and aesthetics without extra plugins.
-                    </p>
-                </div>
-                
-                <div class="text-center animate-on-scroll" data-delay="150">
-                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-4 mx-auto">
-                        <i class="fas fa-dollar-sign text-primary text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Cost-effective</h3>
-                    <p class="text-gray-600">
-                        Reduce ongoing costs with built-in tools that let you scale seamlessly without extra expenses.
-                    </p>
-                </div>
-                
-                <div class="text-center animate-on-scroll" data-delay="300">
-                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-4 mx-auto">
-                        <i class="fas fa-tasks text-primary text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Simplified workflow</h3>
-                    <p class="text-gray-600">
-                        With everything built in, your design process is streamlined, efficient, and hassle-free.
-                    </p>
-                </div>
-                
-                <div class="text-center animate-on-scroll" data-delay="450">
-                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-4 mx-auto">
-                        <i class="fas fa-shield-alt text-primary text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Streamlined & secure</h3>
-                    <p class="text-gray-600">
-                        Fewer external plugins mean fewer vulnerabilities, keeping your site secure and lightweight.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Performance Section -->
-    <section class="py-20 px-4 bg-gray-50">
-        <div class="container mx-auto">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-12 md:mb-0 animate-on-scroll">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Performance that sets you apart</h2>
-                    
-                    <div class="space-y-8">
-                        <div class="flex">
-                            <div class="mr-4">
-                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-code text-primary"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold mb-2">Clean code output</h3>
-                                <p class="text-gray-600">
-                                    Droip generates minimal, well-structured code that is free from unnecessary bloat ensuring efficiency.
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex">
-                            <div class="mr-4">
-                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-tachometer-alt text-primary"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold mb-2">Keep website lightweight</h3>
-                                <p class="text-gray-600">
-                                    Optimized code means faster load times, improved performance, and a smoother user experience.
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex">
-                            <div class="mr-4">
-                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-plug text-primary"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold mb-2">App integration</h3>
-                                <p class="text-gray-600">
-                                    Connect your go-to apps effortlessly within the builder for a smooth and uninterrupted workflow.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="md:w-1/2 animate-on-scroll" data-delay="200">
-                    <div class="bg-gradient-to-br from-indigo-500 to-pink-500 rounded-xl p-1">
-                        <div class="bg-white rounded-lg overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" alt="Performance Dashboard" class="w-full">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Features Grid Section -->
-    <section class="py-20 px-4">
-        <div class="container mx-auto">
-            <div class="text-center mb-16 animate-on-scroll">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Design and build everything <span class="gradient-text">more efficiently</span> with the <span class="gradient-text">most advanced granular controls</span></h2>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-on-scroll">
-                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-exchange-alt text-primary text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Seamless migration</h3>
-                    <p class="text-gray-600">
-                        Migrate your existing design seamlessly into Droip with just a click of a button!
-                    </p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-wpforms text-primary text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Form builder</h3>
-                    <p class="text-gray-600">
-                        Build forms for any purpose and effortlessly manage form data natively.
-                    </p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-code text-primary text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">CSS preview</h3>
-                    <p class="text-gray-600">
-                        See real-time CSS changes and fine-tune styles as you need.
-                    </p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-mobile-alt text-primary text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Unlimited breakpoints</h3>
-                    <p class="text-gray-600">
-                        Achieve pixel-perfect responsiveness across all devices with unlimited breakpoints.
-                    </p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-                        <i class="fab fa-figma text-primary text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Figma to droip</h3>
-                    <p class="text-gray-600">
-                        Seamlessly import Figma designs into Droip and bring your vision to life in no time.
-                    </p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-code text-primary text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Code element</h3>
-                    <p class="text-gray-600">
-                        Add custom HTML, CSS, and JavaScript to an element for extended functionality.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- AI Section -->
-    <section class="py-20 px-4 bg-gradient-to-br from-indigo-600 to-pink-600 text-white">
-        <div class="container mx-auto text-center">
-            <div class="max-w-3xl mx-auto animate-on-scroll">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6">Droip AI</h2>
-                <p class="text-xl mb-8">
-                    Harness AI to accelerate your workflow and creative process.
-                </p>
-                <a href="#" class="bg-white text-primary hover:bg-gray-100 px-8 py-3 rounded-full font-medium text-lg inline-block transition shadow-lg hover:shadow-xl">
-                    Get Started For Free
-                </a>
-                <p class="mt-6 text-indigo-200">
-                    Experience the power of Droip no-code website builder, risk free. Create stunning, responsive sites with pure creative freedom.
-                </p>
-            </div>
-        </div>
-    </section>
-    
+
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white pt-16 pb-8 px-4">
-        <div class="container mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                <div>
-                    <h3 class="text-lg font-bold mb-4">Social</h3>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition">
-                            <i class="fab fa-twitter text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition">
-                            <i class="fab fa-facebook text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition">
-                            <i class="fab fa-instagram text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition">
-                            <i class="fab fa-linkedin text-xl"></i>
-                        </a>
+    <footer class="bg-slate-900 text-white pt-16 pb-8 px-4 border-t border-slate-800">
+        <div class="container mx-auto max-w-6xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+
+                <!-- Brand Info -->
+                <div class="lg:col-span-2">
+                    <a href="index.html" class="flex items-center space-x-2 mb-4">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-rose-500 flex items-center justify-center">
+                            <i class="fas fa-cubes text-white text-sm"></i>
+                        </div>
+                        <span class="text-2xl font-bold font-heading gradient-text">Droip</span>
+                    </a>
+                    <p class="text-slate-400 text-sm leading-relaxed max-w-sm mb-6">
+                        Droip is the next-generation visual site builder for WordPress, empowering creators to build
+                        without code or compromise.
+                    </p>
+                    <div class="flex space-x-4 text-slate-400">
+                        <a href="#" class="hover:text-white transition"><i class="fab fa-twitter text-lg"></i></a>
+                        <a href="#" class="hover:text-white transition"><i class="fab fa-youtube text-lg"></i></a>
+                        <a href="#" class="hover:text-white transition"><i class="fab fa-github text-lg"></i></a>
+                        <a href="#" class="hover:text-white transition"><i class="fab fa-discord text-lg"></i></a>
                     </div>
                 </div>
-                
+
+                <!-- Product Links -->
                 <div>
-                    <h3 class="text-lg font-bold mb-4">Product</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Grid & layouts</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Typography</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Media manager</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Form builder</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Pop-up builder</a></li>
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-slate-200 mb-4">Product</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="editor.html" class="hover:text-white transition">Visual Editor</a></li>
+                        <li><a href="grids.html" class="hover:text-white transition">CSS Grid Engine</a></li>
+                        <li><a href="typography.html" class="hover:text-white transition">Typography Studio</a></li>
+                        <li><a href="seo.html" class="hover:text-white transition">SEO & Performance</a></li>
                     </ul>
                 </div>
-                
+
+                <!-- Resources Links -->
                 <div>
-                    <h3 class="text-lg font-bold mb-4">Resources</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Blog</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Documentation</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Release Notes</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Support</a></li>
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-slate-200 mb-4">Resources</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="resources.html" class="hover:text-white transition">Documentation</a></li>
+                        <li><a href="resources.html" class="hover:text-white transition">Video Tutorials</a></li>
+                        <li><a href="support.html" class="hover:text-white transition">Help Center</a></li>
+                        <li><a href="resources.html" class="hover:text-white transition">Changelog</a></li>
                     </ul>
                 </div>
-                
+
+                <!-- Company Links -->
                 <div>
-                    <h3 class="text-lg font-bold mb-4">Company</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">About</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Pricing</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-slate-200 mb-4">Company</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="pricing.html" class="hover:text-white transition">Pricing</a></li>
+                        <li><a href="support.html" class="hover:text-white transition">Contact Us</a></li>
+                        <li><a href="login.html" class="hover:text-white transition">Sign In</a></li>
+                        <li><a href="get-started.html" class="hover:text-white transition">Get Started</a></li>
                     </ul>
                 </div>
+
             </div>
-            
-            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-500 mb-4 md:mb-0">© 2025 Droip. All rights reserved</p>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-500 hover:text-white transition">Terms & Privacy</a>
-                    <a href="#" class="text-gray-500 hover:text-white transition">Cookie Policy</a>
+
+            <div
+                class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
+                <div>© 2026 Droip Technologies Inc. All rights reserved.</div>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-slate-300">Privacy Policy</a>
+                    <a href="#" class="hover:text-slate-300">Terms of Service</a>
+                    <a href="#" class="hover:text-slate-300">Cookie Preferences</a>
                 </div>
             </div>
         </div>
     </footer>
-    
-    <!-- Cookie Consent -->
-    <div id="cookie-consent" class="fixed bottom-0 left-0 w-full bg-white shadow-lg p-4 z-50 flex justify-between items-center">
-        <p class="text-sm text-gray-600 pr-4">
-            Our website uses cookies to improve your browsing experience on our website. By continuing to use this website, you
-            agree to their use. For details, please check our <a href="#" class="text-primary hover:underline">Privacy Policy</a>.
-        </p>
-        <button id="accept-cookies" class="bg-primary text-white px-4 py-2 rounded whitespace-nowrap">Okay</button>
-    </div>
-    
-    <!-- Paper Airplane Animation -->
-    <div id="airplane-trail" class="airplane-trail"></div>
+
+    <!-- Floating Paper Airplane Element -->
     <div id="paper-airplane" class="paper-airplane">
         <i class="fas fa-paper-plane"></i>
     </div>
-    
-    <!-- JavaScript -->
+    <div id="paper-trail" class="paper-trail"></div>
+
+    <!-- JavaScript logic -->
     <script>
-        // Handle dark mode
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-        }
-        
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if (event.matches) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 1. Mobile Menu Functionality
+            const menuButton = document.getElementById('menu-button');
+            const closeMenu = document.getElementById('close-menu');
+            const mobileNav = document.getElementById('mobile-nav');
+            const mobileNavPanel = document.getElementById('mobile-nav-panel');
+
+            function openMobileNav() {
+                mobileNav.classList.remove('opacity-0', 'pointer-events-none');
+                mobileNavPanel.classList.remove('translate-x-full');
             }
-        });
-        
-        // Mobile menu functionality
-        const menuButton = document.getElementById('menu-button');
-        const closeMenu = document.getElementById('close-menu');
-        const mobileNav = document.getElementById('mobile-nav');
-        
-        menuButton.addEventListener('click', () => {
-            mobileNav.classList.add('open');
-        });
-        
-        closeMenu.addEventListener('click', () => {
-            mobileNav.classList.remove('open');
-        });
-        
-        // Cookie consent
-        const cookieConsent = document.getElementById('cookie-consent');
-        const acceptCookies = document.getElementById('accept-cookies');
-        
-        acceptCookies.addEventListener('click', () => {
-            cookieConsent.style.display = 'none';
-            // In a real implementation, you would set a cookie here
-        });
-        
-        // Scroll animations
-        function handleScrollAnimations() {
-            const elements = document.querySelectorAll('.animate-on-scroll');
-            
-            elements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                const delay = element.getAttribute('data-delay') || 0;
-                
-                if (elementTop < windowHeight * 0.85) {
-                    setTimeout(() => {
-                        element.classList.add('animated');
-                    }, delay);
+
+            function closeMobileNav() {
+                mobileNav.classList.add('opacity-0', 'pointer-events-none');
+                mobileNavPanel.classList.add('translate-x-full');
+            }
+
+            if (menuButton) menuButton.addEventListener('click', openMobileNav);
+            if (closeMenu) closeMenu.addEventListener('click', closeMobileNav);
+            if (mobileNav) {
+                mobileNav.addEventListener('click', (e) => {
+                    if (e.target === mobileNav) closeMobileNav();
+                });
+            }
+
+            // 2. HERO SHOWCASE SLIDER ANIMATION
+            const slideItems = document.querySelectorAll('.slide-item');
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const prevBtn = document.getElementById('prev-slide');
+            const nextBtn = document.getElementById('next-slide');
+            const slideUrl = document.getElementById('slide-url');
+
+            const urls = [
+                'droip.design/editor/visual-canvas',
+                'droip.design/editor/css-grid-studio',
+                'droip.design/editor/motion-timeline',
+                'droip.design/editor/cms-media-library',
+                'droip.design/editor/ai-copilot-generator'
+            ];
+
+            let currentSlide = 0;
+            let autoSlideInterval = null;
+
+            function goToSlide(index) {
+                if (index < 0) index = slideItems.length - 1;
+                if (index >= slideItems.length) index = 0;
+
+                slideItems.forEach((item, i) => {
+                    if (i === index) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+
+                tabBtns.forEach((btn, i) => {
+                    if (i === index) {
+                        btn.classList.add('active');
+                        btn.classList.remove('text-slate-600');
+                    } else {
+                        btn.classList.remove('active');
+                        btn.classList.add('text-slate-600');
+                    }
+                });
+
+                if (slideUrl && urls[index]) {
+                    slideUrl.textContent = urls[index];
                 }
+
+                currentSlide = index;
+            }
+
+            function startAutoSlide() {
+                stopAutoSlide();
+                autoSlideInterval = setInterval(() => {
+                    goToSlide(currentSlide + 1);
+                }, 5000);
+            }
+
+            function stopAutoSlide() {
+                if (autoSlideInterval) clearInterval(autoSlideInterval);
+            }
+
+            tabBtns.forEach((btn, idx) => {
+                btn.addEventListener('click', () => {
+                    goToSlide(idx);
+                    startAutoSlide();
+                });
             });
-        }
-        
-        // Run once on load
-        handleScrollAnimations();
-        
-        // Add scroll event listener
-        window.addEventListener('scroll', handleScrollAnimations);
 
-        // GSAP ScrollTrigger initialization
-        gsap.registerPlugin(ScrollTrigger);
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    goToSlide(currentSlide - 1);
+                    startAutoSlide();
+                });
+            }
 
-        // Initialize horizontal scroll slider
-        function initHorizontalSlider() {
-            const slider = document.querySelector("#scroll-slider");
-            const slides = document.querySelector("#scroll-slider > div");
-            
-            if (slider && slides) {
-                // Only enable GSAP animation on desktop
-                if (window.innerWidth > 768) {
-                    // Calculate precise scroll distance to keep last slide in view
-                    const slideCount = slides.children.length;
-                    const containerWidth = slider.offsetWidth;
-                    const totalSlidesWidth = slides.scrollWidth;
-                    
-                    // Calculate how much to scroll: move (slideCount - 1) slides worth
-                    // This leaves the last slide perfectly positioned in the container
-                    const scrollDistance = totalSlidesWidth - containerWidth;
-                    
-                    gsap.to(slides, {
-                        x: -scrollDistance,
-                        ease: "none",
-                        scrollTrigger: {
-                            trigger: slider,
-                            start: "center center", // Wait until slider is centered in viewport
-                            end: "bottom+=300% center", // End point for scroll
-                            scrub: 1,
-                            pin: true,
-                            anticipatePin: 1,
-                            invalidateOnRefresh: true,
-                            onUpdate: function(self) {
-                                // Ensure we don't over-scroll past the last slide
-                                const maxScroll = -scrollDistance;
-                                const currentX = gsap.getProperty(slides, "x");
-                                if (currentX < maxScroll) {
-                                    gsap.set(slides, {x: maxScroll});
-                                }
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    goToSlide(currentSlide + 1);
+                    startAutoSlide();
+                });
+            }
+
+            startAutoSlide();
+
+            // 3. GSAP ScrollTrigger Integration for Smooth Pinning & Pinned Slide Progression
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+
+                if (window.innerWidth >= 768) {
+                    ScrollTrigger.create({
+                        trigger: "#showcase-slider",
+                        start: "center center",
+                        end: "+=2200",
+                        pin: true,
+                        pinSpacing: true,
+                        scrub: 0.5,
+                        anticipatePin: 1,
+                        onUpdate: (self) => {
+                            stopAutoSlide();
+                            const totalSlides = slideItems.length;
+                            const slideIndex = Math.min(Math.floor(self.progress * totalSlides), totalSlides - 1);
+                            if (slideIndex !== currentSlide) {
+                                goToSlide(slideIndex);
                             }
+                        },
+                        onLeave: () => {
+                            startAutoSlide();
+                        },
+                        onLeaveBack: () => {
+                            startAutoSlide();
                         }
                     });
                 }
             }
-        }
 
-        // Handle window resize
-        function handleResize() {
-            ScrollTrigger.refresh();
-        }
+            // 4. FAQ Accordion Toggle
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const content = item.querySelector('.faq-content');
+                    const icon = item.querySelector('.faq-icon');
+                    const isOpen = !content.classList.contains('hidden');
 
-        // Initialize when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            initHorizontalSlider();
-        });
+                    // Close all FAQs first
+                    document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+                    document.querySelectorAll('.faq-icon').forEach(i => i.classList.remove('rotate-180'));
 
-        // Handle window resize
-        window.addEventListener('resize', handleResize);
-        
-        // Paper airplane scroll animation
-        function initPaperAirplane() {
-            const airplane = document.getElementById('paper-airplane');
-            const trail = document.getElementById('airplane-trail');
-            const slider = document.querySelector('#scroll-slider');
-            const footer = document.querySelector('footer');
-            
-            if (!airplane || !trail || !slider || !footer) return;
-            
-            let isAirplaneActive = false;
-            const startOffset = slider.offsetTop + slider.offsetHeight + 100; // Start after slider
-            const endOffset = footer.offsetTop - 200; // Stop just before footer
-            
-            function updateAirplane() {
-                const scrollY = window.scrollY;
-                const windowHeight = window.innerHeight;
-                const windowWidth = window.innerWidth;
-                
-                // Check if we're past the slider section
-                if (scrollY > startOffset && scrollY < endOffset) {
-                    if (!isAirplaneActive) {
-                        airplane.classList.add('visible', 'flying');
-                        trail.classList.add('visible');
-                        isAirplaneActive = true;
+                    if (!isOpen) {
+                        content.classList.remove('hidden');
+                        icon.classList.add('rotate-180');
                     }
-                    
-                    // Calculate airplane position based on scroll progress
-                    const scrollProgress = (scrollY - startOffset) / (endOffset - startOffset);
-                    
-                    // Vertical position (following scroll with some offset)
-                    const maxTop = windowHeight - 150;
-                    const minTop = 150;
-                    const airplaneTop = minTop + (maxTop - minTop) * scrollProgress;
-                    
-                    // Horizontal swiveling from left edge to right edge
-                    const leftMargin = 100;
-                    const rightMargin = 100;
-                    const maxLeft = windowWidth - rightMargin;
-                    const minLeft = leftMargin;
-                    
-                    // Use sine wave for smooth swiveling motion
-                    const swivelingProgress = Math.sin(scrollProgress * Math.PI * 3) * 0.5 + 0.5;
-                    const airplaneLeft = minLeft + (maxLeft - minLeft) * swivelingProgress;
-                    
-                    // Position airplane
-                    airplane.style.top = `${Math.min(Math.max(airplaneTop, minTop), maxTop)}px`;
-                    airplane.style.left = `${airplaneLeft}px`;
-                    
-                    // Rotate airplane based on movement direction
-                    const prevLeft = parseFloat(airplane.dataset.prevLeft || airplaneLeft);
-                    const direction = airplaneLeft > prevLeft ? 1 : -1;
-                    const rotationAngle = direction * 15 * Math.sin(scrollProgress * Math.PI * 6);
-                    airplane.style.transform = `rotate(${rotationAngle}deg)`;
-                    airplane.dataset.prevLeft = airplaneLeft;
-                    
-                    // Update trail position and size
-                    const trailLength = Math.abs(airplaneLeft - prevLeft) + 50;
-                    const trailLeft = Math.min(airplaneLeft, prevLeft) - 25;
-                    trail.style.top = `${airplaneTop + 8}px`; // Slightly below airplane
-                    trail.style.left = `${trailLeft}px`;
-                    trail.style.width = `${trailLength}px`;
-                    
-                } else if (isAirplaneActive && (scrollY <= startOffset || scrollY >= endOffset)) {
-                    // Hide airplane when outside active zone
-                    airplane.classList.remove('visible', 'flying');
-                    trail.classList.remove('visible');
-                    isAirplaneActive = false;
-                }
-            }
-            
-            // Throttle scroll events for better performance
-            let ticking = false;
-            function onScroll() {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        updateAirplane();
-                        ticking = false;
+                });
+            });
+
+            // 5. Pricing Toggle
+            const btnMonthly = document.getElementById('btn-monthly');
+            const btnYearly = document.getElementById('btn-yearly');
+            const priceVals = document.querySelectorAll('.price-val');
+            const monthlyPrices = ['$19', '$39', '$79'];
+            const yearlyPrices = ['$15', '$31', '$63'];
+
+            if (btnMonthly && btnYearly) {
+                btnMonthly.addEventListener('click', () => {
+                    btnMonthly.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+                    btnMonthly.classList.remove('text-slate-600');
+                    btnYearly.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+                    btnYearly.classList.add('text-slate-600');
+
+                    priceVals.forEach((p, idx) => {
+                        p.textContent = monthlyPrices[idx];
                     });
-                    ticking = true;
-                }
+                });
+
+                btnYearly.addEventListener('click', () => {
+                    btnYearly.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+                    btnYearly.classList.remove('text-slate-600');
+                    btnMonthly.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+                    btnMonthly.classList.add('text-slate-600');
+
+                    priceVals.forEach((p, idx) => {
+                        p.textContent = yearlyPrices[idx];
+                    });
+                });
             }
-            
-            window.addEventListener('scroll', onScroll);
-            
-            // Initial check
-            updateAirplane();
-        }
-        
-        // Initialize paper airplane after DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            initPaperAirplane();
+
+            // 6. Smooth Flying Paper Airplane Scroll Path
+            const airplane = document.getElementById('paper-airplane');
+            const trail = document.getElementById('paper-trail');
+
+            if (airplane && trail) {
+                let lastScrollY = window.scrollY;
+
+                window.addEventListener('scroll', () => {
+                    const scrollY = window.scrollY;
+                    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                    const scrollProgress = scrollY / maxScroll;
+
+                    if (scrollY > 300 && scrollProgress < 0.92) {
+                        airplane.style.opacity = '1';
+
+                        // Calculate positions
+                        const x = 50 + Math.sin(scrollProgress * Math.PI * 4) * (window.innerWidth * 0.35);
+                        const y = 120 + scrollProgress * (window.innerHeight - 250);
+                        const rotation = (scrollY - lastScrollY) * 2;
+
+                        airplane.style.left = `${x}px`;
+                        airplane.style.top = `${y}px`;
+                        airplane.style.transform = `rotate(${Math.min(Math.max(rotation, -30), 30)}deg)`;
+
+                        if (trail) {
+                            trail.style.left = `${x - 40}px`;
+                            trail.style.top = `${y + 15}px`;
+                            trail.style.width = '70px';
+                        }
+                    } else {
+                        airplane.style.opacity = '0';
+                    }
+
+                    lastScrollY = scrollY;
+                });
+            }
+
         });
     </script>
 </body>
+
 </html>
